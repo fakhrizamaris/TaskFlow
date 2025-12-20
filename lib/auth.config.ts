@@ -13,4 +13,7 @@ export default {
   ],
   // Wajib untuk middleware: Pakai strategi JWT agar satpam tidak perlu cek DB terus
   session: { strategy: 'jwt' },
+  pages: {
+    signIn: '/login',
+  },
 } satisfies NextAuthConfig;

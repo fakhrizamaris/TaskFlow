@@ -1,6 +1,6 @@
 // web/proxy.ts
 import NextAuth from 'next-auth';
-import { authConfig } from '@/lib/auth.config';
+import authConfig from '@/lib/auth.config';
 
 const { auth } = NextAuth(authConfig);
 
