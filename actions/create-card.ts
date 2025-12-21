@@ -45,6 +45,6 @@ export async function createCard(formData: FormData) {
   });
 
   // 4. Update UI
-  revalidatePath(`/board/${boardId}`);
+  revalidatePath(`/dashboard/board/${boardId}`);
   return { success: true };
 }

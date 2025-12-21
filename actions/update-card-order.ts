@@ -34,7 +34,7 @@ export async function updateCardOrder(items: CardUpdate[]) {
 
   try {
     await db.$transaction(transaction);
-    revalidatePath(`/board/${boardId}`);
+    revalidatePath(`/dashboard/board/${boardId}`);
     return { success: true };
   } catch (error) {
     return { error: 'Gagal menyimpan urutan kartu' };

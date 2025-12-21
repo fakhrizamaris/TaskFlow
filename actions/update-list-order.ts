@@ -5,30 +5,50 @@ import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 
-export async function updateListOrder(items: { id: string; order: number; boardId: string }[]) {
+interface ListUpdate {
+  id: string;
+  order: number;
+  boardId: string;
+}
+
+export async function updateListOrder(items: ListUpdate[]) {
   const session = await auth();
 
-  if (!session?.user || items.length === 0) return { error: 'Unauthorized' };
+  if (!session?.user || items.length === 0) {
+    return { error: 'Unauthorized' };
+  }
 
   const boardId = items[0].boardId;
 
-  // Gunakan Transaction agar semua update terjadi bersamaan (Atomic)
+  // Verifikasi kepemilikan board
+  const board = await db.board.findUnique({
+    where: {
+      id: boardId,
+      userId: session.user.id,
+    },
+  });
+
+  if (!board) {
+    return { error: 'Board tidak ditemukan' };
+  }
+
   const transaction = items.map((list) =>
     db.list.update({
       where: {
         id: list.id,
-        // Pastikan board milik user (Security)
-        board: { userId: session.user.id },
+        boardId: boardId, // Pastikan list milik board yang benar
       },
-      data: { order: list.order },
+      data: {
+        order: list.order,
+      },
     })
   );
 
   try {
     await db.$transaction(transaction);
-    revalidatePath(`/board/${boardId}`);
+    revalidatePath(`/dashboard/board/${boardId}`);
     return { success: true };
   } catch (error) {
-    return { error: 'Gagal menyimpan urutan' };
+    return { error: 'Gagal menyimpan urutan list' };
   }
 }
