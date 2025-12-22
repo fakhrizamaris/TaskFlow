@@ -140,7 +140,7 @@ export const BoardNavbar = ({ data }: BoardNavbarProps) => {
         {/* 2. TOMBOL INVITE / SHARE */}
         {isCollaborative && (
           <div className="relative">
-            <button onClick={() => setIsInviteOpen(!isInviteOpen)} className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-x-2 transition">
+            <button onClick={() => setIsInviteOpen(!isInviteOpen)} className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-x-2 transition cursor-pointer">
               <UserPlus className="h-4 w-4" />
               Undang
             </button>

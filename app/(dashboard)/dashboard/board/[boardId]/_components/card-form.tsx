@@ -89,7 +89,7 @@ export const CardForm = ({ listId, isEditing, enableEditing, disableEditing }: C
 
   return (
     <div className="pt-2 px-2">
-      <button onClick={enableEditing} className="h-auto px-2 py-1.5 w-full justify-start text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded text-sm font-medium flex items-center gap-x-1 transition">
+      <button onClick={enableEditing} className="h-auto px-2 py-1.5 w-full justify-start text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded text-sm font-medium flex items-center gap-x-1 transition cursor-pointer">
         <Plus className="h-4 w-4" />
         Tambah Kartu
       </button>

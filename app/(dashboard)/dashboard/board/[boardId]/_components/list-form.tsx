@@ -67,7 +67,7 @@ export const ListForm = ({ boardId }: ListFormProps) => {
 
   return (
     <li className="w-[272px] shrink-0 select-none">
-      <button onClick={enableEditing} className="w-full rounded-md bg-white/50 hover:bg-white/80 transition p-3 flex items-center font-medium text-sm text-white hover:text-black">
+      <button onClick={enableEditing} className="w-full rounded-md bg-white/50 hover:bg-white/80 transition p-3 flex items-center font-medium text-sm text-white hover:text-black cursor-pointer">
         <Plus className="h-4 w-4 mr-2" />
         Tambahkan List
       </button>
