@@ -20,8 +20,11 @@ steps:
       - 'asia-southeast2'
       - '--allow-unauthenticated'
 
-# Konfigurasi timeout (opsional)
+# Konfigurasi timeout
 timeout: '1200s'
 
 images:
   - 'asia-southeast2-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/socket-server:$COMMIT_SHA'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
