@@ -26,18 +26,14 @@ const io = new Server(httpServer, {
   },
 });
 
-// Track users in each board room
 const boardUsers: Record<string, Map<string, { id: string; name: string; image?: string }>> = {};
 
 io.on('connection', (socket) => {
   console.log('User terhubung:', socket.id);
 
-  // 1. Event saat User membuka halaman Board tertentu
   socket.on('join-board', (data: { boardId: string; user: { id: string; name: string; image?: string } }) => {
     const { boardId, user } = data;
     socket.join(boardId);
-
-    // Track user di room
     if (!boardUsers[boardId]) {
       boardUsers[boardId] = new Map();
     }
@@ -50,7 +46,6 @@ io.on('connection', (socket) => {
     console.log(`User ${user.name} (${socket.id}) masuk room board: ${boardId}`);
   });
 
-  // 2. Event saat User meninggalkan halaman
   socket.on('leave-board', (boardId: string) => {
     socket.leave(boardId);
 
@@ -69,7 +64,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  // 3. Event saat ada perubahan (List/Card berubah)
   socket.on('update-board', (data: { boardId: string; message: string; userName: string }) => {
     const { boardId, message, userName } = data;
 
@@ -78,7 +72,6 @@ io.on('connection', (socket) => {
     console.log(`📤 ${userName} updated board ${boardId}: ${message}`);
   });
 
-  // 4. Event Interaksi Realtime (Hover, Drag, Typing)
   socket.on(
     'user-interaction',
     (data: {
