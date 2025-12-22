@@ -1,4 +1,3 @@
-// web/app/page.tsx
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { ArrowRight, Layout, Users, Zap } from 'lucide-react';
@@ -12,7 +11,7 @@ export default async function LandingPage() {
       <header className="fixed top-0 w-full border-b bg-white/80 backdrop-blur-md z-50">
         <div className="container mx-auto flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-2 font-bold text-xl text-blue-600">
-            <Layout className="h-6 w-6" />
+            <img src="/icon123.png" alt="Flerro Logo" className="h-8 w-8" />
             <span>Flerro</span>
           </div>
 
