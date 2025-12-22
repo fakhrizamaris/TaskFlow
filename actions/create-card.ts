@@ -11,7 +11,7 @@ export async function createCard(formData: FormData) {
   const listId = formData.get('listId') as string;
   const boardId = formData.get('boardId') as string;
 
-  if (!session?.user || !title || !listId || !boardId) {
+  if (!session?.user?.id || !title || !listId || !boardId) {
     return { error: 'Data tidak lengkap' };
   }
 
@@ -40,7 +40,7 @@ export async function createCard(formData: FormData) {
       title,
       listId,
       order: newOrder,
-      authorId: session.user.id,
+      authorId: session.user.id!,
     },
   });
 

@@ -14,7 +14,7 @@ interface ListUpdate {
 export async function updateListOrder(items: ListUpdate[]) {
   const session = await auth();
 
-  if (!session?.user || items.length === 0) {
+  if (!session?.user?.id || items.length === 0) {
     return { error: 'Unauthorized' };
   }
 
@@ -48,7 +48,7 @@ export async function updateListOrder(items: ListUpdate[]) {
     await db.$transaction(transaction);
     revalidatePath(`/dashboard/board/${boardId}`);
     return { success: true };
-  } catch (error) {
+  } catch {
     return { error: 'Gagal menyimpan urutan list' };
   }
 }

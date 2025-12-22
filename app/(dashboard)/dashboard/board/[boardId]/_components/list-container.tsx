@@ -8,7 +8,7 @@ import { ListForm } from './list-form';
 import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { updateListOrder } from '@/actions/update-list-order';
 import { updateCardOrder } from '@/actions/update-card-order';
-import { useParams } from 'next/navigation';
+import { useBoardSocketContext } from '@/providers/board-socket-provider';
 
 type ListWithCards = List & { cards: Card[] };
 
@@ -26,7 +26,8 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
 }
 
 export const ListContainer = ({ boardId, data }: ListContainerProps) => {
-  const params = useParams();
+  const { emitBoardUpdate, emitInteraction, activeInteractions } = useBoardSocketContext();
+
   // State lokal untuk optimistic update (langsung update UI sebelum server response)
   const [orderedData, setOrderedData] = useState(data);
 
@@ -133,13 +134,24 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
         ]);
       }
     }
+
+    // ✅ Emit update ke user lain melalui socket
+    emitBoardUpdate('Ada yang geser kartu!');
+    emitInteraction('drag-end', 'board');
   };
 
+  const onDragStart = () => {
+    emitInteraction('drag-start', 'board');
+  };
+
+  const isDragByOther = activeInteractions['board'] && activeInteractions['board'].type === 'drag-start';
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+      {isDragByOther && <div className="fixed bottom-4 right-4 bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-bounce">✋ {activeInteractions['board'].userName} sedang memindahkan kartu...</div>}
       <Droppable droppableId="lists" type="list" direction="horizontal">
         {(provided) => (
-          <ol {...provided.droppableProps} ref={provided.innerRef} className="flex gap-x-3 h-full">
+          <ol {...provided.droppableProps} ref={provided.innerRef} className="flex gap-x-3 h-full items-start">
             {orderedData.map((list, index) => (
               <ListItem key={list.id} index={index} data={list} />
             ))}

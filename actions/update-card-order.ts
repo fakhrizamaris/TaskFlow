@@ -15,7 +15,7 @@ interface CardUpdate {
 export async function updateCardOrder(items: CardUpdate[]) {
   const session = await auth();
 
-  if (!session?.user || items.length === 0) return { error: 'Unauthorized' };
+  if (!session?.user?.id || items.length === 0) return { error: 'Unauthorized' };
 
   const boardId = items[0].boardId;
 
@@ -23,7 +23,7 @@ export async function updateCardOrder(items: CardUpdate[]) {
     db.card.update({
       where: {
         id: card.id,
-        list: { board: { userId: session.user.id } },
+        list: { board: { userId: session.user!.id } },
       },
       data: {
         order: card.order,
@@ -36,7 +36,7 @@ export async function updateCardOrder(items: CardUpdate[]) {
     await db.$transaction(transaction);
     revalidatePath(`/dashboard/board/${boardId}`);
     return { success: true };
-  } catch (error) {
+  } catch {
     return { error: 'Gagal menyimpan urutan kartu' };
   }
 }

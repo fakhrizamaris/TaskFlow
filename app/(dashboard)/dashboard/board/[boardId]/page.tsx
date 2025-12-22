@@ -2,7 +2,8 @@
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { redirect } from 'next/navigation';
-import { ListContainer } from './_components/list-container'; // Kita buat sebentar lagi
+import { ListContainer } from './_components/list-container';
+import { BoardNavbar } from './_components/board-navbar';
 
 interface BoardIdPageProps {
   params: Promise<{
@@ -17,33 +18,36 @@ export default async function BoardIdPage({ params }: BoardIdPageProps) {
   if (!session?.user) redirect('/login');
 
   // Ambil data board beserta List dan Card di dalamnya
-  const board = await db.board.findUnique({
+  const board = await db.board.findFirst({
+    // Ubah findUnique jadi findFirst
     where: {
       id: boardId,
-      userId: session.user.id, // Pastikan hanya pemilik yang bisa akses
+      // LOGIKA BARU:
+      // Boleh masuk JIKA: Dia pemilik (userId) ATAU dia ada di daftar members
+      OR: [{ userId: session.user.id }, { members: { some: { userId: session.user.id } } }],
     },
     include: {
       lists: {
-        orderBy: { order: 'asc' }, // Urutkan list dari kiri ke kanan
+        orderBy: { order: 'asc' },
         include: {
-          cards: {
-            orderBy: { order: 'asc' }, // Urutkan kartu dari atas ke bawah
-          },
+          cards: { orderBy: { order: 'asc' } },
         },
       },
     },
   });
 
-  // Jika board tidak ketemu (atau bukan miliknya), tendang ke dashboard
   if (!board) redirect('/dashboard');
 
   return (
-    <div className="p-4 h-full overflow-x-auto bg-blue-500 min-h-screen text-white">
-      {/* Header Board Sederhana */}
-      <div className="font-bold text-xl mb-4 px-2">{board.title}</div>
+    <div className="relative h-full bg-blue-500 min-h-screen overflow-hidden">
+      {/* 1. Pasang Navbar di sini */}
+      <BoardNavbar data={board} />
 
-      {/* Kontainer List (Tempat kita menaruh kolom-kolom) */}
-      <ListContainer boardId={boardId} data={board.lists} />
+      {/* 2. Konten List Container */}
+      {/* Tambahkan pt-20 agar tidak ketutup navbar */}
+      <main className="h-full overflow-x-auto p-4 pt-20">
+        <ListContainer boardId={boardId} data={board.lists} />
+      </main>
     </div>
   );
 }

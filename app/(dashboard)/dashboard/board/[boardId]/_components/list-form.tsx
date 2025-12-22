@@ -5,6 +5,7 @@ import { useState, useRef, ElementRef } from 'react';
 import { Plus, X } from 'lucide-react';
 import { createList } from '@/actions/create-list';
 import { useRouter } from 'next/navigation';
+import { useBoardSocketContext } from '@/providers/board-socket-provider';
 
 interface ListFormProps {
   boardId: string;
@@ -15,6 +16,7 @@ export const ListForm = ({ boardId }: ListFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const formRef = useRef<ElementRef<'form'>>(null);
   const inputRef = useRef<ElementRef<'input'>>(null);
+  const { emitBoardUpdate } = useBoardSocketContext();
 
   const enableEditing = () => {
     setIsEditing(true);
@@ -32,6 +34,9 @@ export const ListForm = ({ boardId }: ListFormProps) => {
     await createList(formData);
     disableEditing();
     router.refresh();
+
+    // ✅ Notify user lain bahwa ada list baru
+    emitBoardUpdate('List baru ditambahkan');
   };
 
   if (isEditing) {
