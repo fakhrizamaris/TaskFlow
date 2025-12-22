@@ -13,7 +13,7 @@ export default async function LandingPage() {
         <div className="container mx-auto flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-2 font-bold text-xl text-blue-600">
             <Layout className="h-6 w-6" />
-            <span>TaskFlow</span>
+            <span>Flerro</span>
           </div>
 
           <div className="flex items-center gap-4">
@@ -45,7 +45,7 @@ export default async function LandingPage() {
             <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 sm:text-6xl mb-6">
               Kolaborasi Project jadi lebih <span className="text-blue-600">Mudah & Cepat</span>
             </h1>
-            <p className="text-lg text-gray-600 mb-10 leading-relaxed">Atur tugas tim, pantau progres, dan selesaikan project tepat waktu dengan TaskFlow. Satu platform untuk semua kebutuhan manajemen tugasmu.</p>
+            <p className="text-lg text-gray-600 mb-10 leading-relaxed">Atur tugas tim, pantau progres, dan selesaikan project tepat waktu dengan Flerro. Satu platform untuk semua kebutuhan manajemen tugasmu.</p>
 
             <div className="flex justify-center gap-4">
               <Link
