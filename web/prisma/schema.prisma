@@ -80,15 +80,24 @@ model List {
 }
 
 model Card {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   title       String
   description String?
   order       Int
+  status      CardStatus @default(TODO)
+  dueDate     DateTime?
   listId      String
-  list        List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  list        List       @relation(fields: [listId], references: [id], onDelete: Cascade)
   authorId    String
-  author      User     @relation(fields: [authorId], references: [id])
-  createdAt   DateTime @default(now())
+  author      User       @relation(fields: [authorId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+enum CardStatus {
+  TODO
+  IN_PROGRESS
+  DONE
 }
 
 model BoardMember {

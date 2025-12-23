@@ -156,7 +156,7 @@ export default async function LandingPage() {
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-8 leading-tight">
+              <h1 className="text-5xl sm:text-6xl lg:text-6xl font-extrabold tracking-tight mb-8 leading-tight">
                 <span className="gradient-text">Kelola Project Tim</span>
                 <br />
                 <span className="gradient-text-primary">Dengan Cara yang Lebih Cerdas</span>

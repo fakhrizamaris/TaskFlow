@@ -1,4 +1,3 @@
-// web/lib/auth.ts
 import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { db } from '@/lib/db';
@@ -7,7 +6,6 @@ import GitHub from 'next-auth/providers/github';
 import Credentials from 'next-auth/providers/credentials';
 import * as nodeCrypto from 'crypto';
 
-// Simple hash function matching the one in register action
 function hashPassword(password: string): string {
   const hash = nodeCrypto.createHash('sha256');
   hash.update(password + process.env.AUTH_SECRET);

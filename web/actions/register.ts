@@ -4,6 +4,8 @@
 import { db } from '@/lib/db';
 import { z } from 'zod';
 import * as nodeCrypto from 'crypto';
+import { sendEmail } from '@/lib/email';
+import { getWelcomeEmailTemplate, getWelcomeEmailText } from '@/lib/email-templates';
 
 // Validation schema
 const registerSchema = z.object({
@@ -81,6 +83,16 @@ export async function register(formData: FormData) {
         email: email.toLowerCase(),
         password: hashedPassword,
       },
+    });
+
+    // Send welcome email (async, don't wait for it)
+    sendEmail({
+      to: email.toLowerCase(),
+      subject: '🚀 Selamat Datang di Frello!',
+      html: getWelcomeEmailTemplate(name),
+      text: getWelcomeEmailText(name),
+    }).catch((err) => {
+      console.error('Failed to send welcome email:', err);
     });
 
     return { success: 'Registrasi berhasil! Silakan login.' };

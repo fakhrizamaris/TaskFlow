@@ -1,10 +1,11 @@
 // web/components/dashboard/create-board-button.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { createBoard } from '@/actions/create-board';
-import { Plus, X, Loader2, Lock, Users } from 'lucide-react';
+import { Plus, X, Loader2, Lock, Users, Zap, ArrowRight, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 type FormData = {
@@ -14,6 +15,8 @@ type FormData = {
 
 export const CreateBoardButton = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
   const {
@@ -24,11 +27,31 @@ export const CreateBoardButton = () => {
     reset,
   } = useForm<FormData>({
     defaultValues: {
-      type: 'private', // Default ke private
+      type: 'private',
     },
   });
 
   const selectedType = watch('type');
+  const titleValue = watch('title');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Close modal on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   const onSubmit = async (data: FormData) => {
     const formData = new FormData();
@@ -37,102 +60,204 @@ export const CreateBoardButton = () => {
 
     await createBoard(formData);
 
-    reset();
-    setIsOpen(false);
-    router.refresh();
+    setIsSuccess(true);
+
+    setTimeout(() => {
+      reset();
+      setIsOpen(false);
+      setIsSuccess(false);
+      router.refresh();
+    }, 1500);
   };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    reset();
+    setIsSuccess(false);
+  };
+
+  const Modal =
+    mounted && isOpen
+      ? createPortal(
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 min-h-screen" onClick={(e) => e.target === e.currentTarget && handleClose()}>
+            {/* Backdrop with animated gradient */}
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+
+            {/* Floating orbs in modal */}
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/10 blur-3xl animate-pulse pointer-events-none" />
+            <div className="absolute bottom-1/4 right-1/4 w-48 h-48 rounded-full bg-gradient-to-br from-cyan-500/20 to-emerald-500/10 blur-3xl animate-pulse delay-1000 pointer-events-none" />
+
+            {/* Modal Content */}
+            <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-zinc-700/50 bg-zinc-900/95 backdrop-blur-xl shadow-2xl animate-in zoom-in-95 fade-in duration-300">
+              {/* Shine effect */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-indigo-500/10 via-transparent to-transparent rotate-12 animate-pulse" />
+              </div>
+
+              {/* Header with gradient border */}
+              <div className="relative flex items-center justify-between p-5 border-b border-zinc-700/50">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/25">
+                    <Plus className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-zinc-100">Buat Board Baru</h3>
+                    <p className="text-xs text-zinc-500">Mulai proyek kolaborasi baru</p>
+                  </div>
+                </div>
+                <button onClick={handleClose} className="flex items-center justify-center w-8 h-8 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-all duration-200">
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Success State */}
+              {isSuccess ? (
+                <div className="p-8 text-center">
+                  <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 mb-5 animate-bounce">
+                    <Sparkles className="h-10 w-10 text-white" />
+                    <div className="absolute inset-0 rounded-full bg-emerald-400/30 animate-ping" />
+                  </div>
+                  <h4 className="text-xl font-bold text-zinc-100 mb-2">Board Berhasil Dibuat! 🎉</h4>
+                  <p className="text-sm text-zinc-400">Mempersiapkan workspace Anda...</p>
+                  <div className="mt-4 flex justify-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-2 h-2 rounded-full bg-indigo-500 animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
+                </div>
+              ) : (
+                /* Form */
+                <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
+                  {/* Title Input with character counter */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-sm font-medium text-zinc-300">Nama Board</label>
+                      <span className={`text-xs ${(titleValue?.length || 0) > 40 ? 'text-amber-400' : 'text-zinc-500'}`}>{titleValue?.length || 0}/50</span>
+                    </div>
+                    <div className="relative group">
+                      <input
+                        {...register('title', {
+                          required: 'Judul wajib diisi',
+                          minLength: { value: 3, message: 'Minimal 3 karakter' },
+                          maxLength: { value: 50, message: 'Maksimal 50 karakter' },
+                        })}
+                        type="text"
+                        placeholder="Misal: Marketing Campaign 2025"
+                        maxLength={50}
+                        className="w-full rounded-xl border border-zinc-700 bg-zinc-800/50 px-4 py-3 text-zinc-100 placeholder:text-zinc-500 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-200"
+                        autoFocus
+                      />
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-cyan-500/20 opacity-0 group-focus-within:opacity-100 transition-opacity -z-10 blur-sm" />
+                    </div>
+                    {errors.title && (
+                      <p className="text-red-400 text-xs flex items-center gap-1 animate-in slide-in-from-top-1">
+                        <span className="inline-block w-1 h-1 rounded-full bg-red-400" />
+                        {errors.title.message}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Board Type Selection - Enhanced Cards */}
+                  <div className="space-y-3">
+                    <label className="block text-sm font-medium text-zinc-300">Tipe Board</label>
+                    <div className="grid grid-cols-2 gap-4">
+                      {/* Private Option */}
+                      <label
+                        className={`relative flex flex-col items-center gap-3 p-5 rounded-xl cursor-pointer transition-all duration-300 border-2 ${
+                          selectedType === 'private' ? 'border-indigo-500 bg-indigo-500/10 shadow-lg shadow-indigo-500/10' : 'border-zinc-700 bg-zinc-800/30 hover:border-zinc-600 hover:bg-zinc-800/50'
+                        }`}
+                      >
+                        <input type="radio" value="private" {...register('type')} className="sr-only" />
+                        <div className={`flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 ${selectedType === 'private' ? 'bg-gradient-to-br from-indigo-500 to-blue-600 shadow-lg' : 'bg-zinc-700'}`}>
+                          <Lock className={`h-6 w-6 ${selectedType === 'private' ? 'text-white' : 'text-zinc-400'}`} />
+                        </div>
+                        <div className="text-center">
+                          <span className={`block text-sm font-semibold ${selectedType === 'private' ? 'text-indigo-400' : 'text-zinc-300'}`}>Pribadi</span>
+                          <span className="text-xs text-zinc-500 mt-1 block">Hanya Anda yang bisa akses</span>
+                        </div>
+                        {selectedType === 'private' && (
+                          <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-indigo-500 flex items-center justify-center animate-in zoom-in">
+                            <Zap className="h-3 w-3 text-white" />
+                          </div>
+                        )}
+                      </label>
+
+                      {/* Public/Collaboration Option */}
+                      <label
+                        className={`relative flex flex-col items-center gap-3 p-5 rounded-xl cursor-pointer transition-all duration-300 border-2 ${
+                          selectedType === 'public' ? 'border-emerald-500 bg-emerald-500/10 shadow-lg shadow-emerald-500/10' : 'border-zinc-700 bg-zinc-800/30 hover:border-zinc-600 hover:bg-zinc-800/50'
+                        }`}
+                      >
+                        <input type="radio" value="public" {...register('type')} className="sr-only" />
+                        <div className={`flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 ${selectedType === 'public' ? 'bg-gradient-to-br from-emerald-500 to-green-600 shadow-lg' : 'bg-zinc-700'}`}>
+                          <Users className={`h-6 w-6 ${selectedType === 'public' ? 'text-white' : 'text-zinc-400'}`} />
+                        </div>
+                        <div className="text-center">
+                          <span className={`block text-sm font-semibold ${selectedType === 'public' ? 'text-emerald-400' : 'text-zinc-300'}`}>Kolaborasi</span>
+                          <span className="text-xs text-zinc-500 mt-1 block">Undang teman via kode</span>
+                        </div>
+                        {selectedType === 'public' && (
+                          <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center animate-in zoom-in">
+                            <Zap className="h-3 w-3 text-white" />
+                          </div>
+                        )}
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Info for collaboration board */}
+                  {selectedType === 'public' && (
+                    <div className="flex items-start gap-3 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 animate-in fade-in slide-in-from-top-2">
+                      <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                        <Sparkles className="h-4 w-4 text-emerald-400" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-emerald-300 font-medium">Tips Kolaborasi</p>
+                        <p className="text-xs text-emerald-400/70 mt-1">Setelah board dibuat, Anda akan mendapatkan kode unik yang bisa dibagikan ke teman untuk bergabung.</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Footer Buttons */}
+                  <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
+                    <button type="button" onClick={handleClose} className="px-4 py-2 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 rounded-lg transition-all duration-200">
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="group flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl hover:from-indigo-500 hover:to-purple-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <span>Membuat...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Buat Board</span>
+                          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>,
+          document.body
+        )
+      : null;
 
   return (
     <>
-      {/* Tombol Pemicu (Trigger) */}
-      <button id="create-board-btn" onClick={() => setIsOpen(true)} className="btn-primary inline-flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg cursor-pointer">
-        <Plus className="h-5 w-5" />
-        Buat Board Baru
+      <button id="create-board-btn" onClick={() => setIsOpen(true)} className="btn-primary group inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-lg cursor-pointer relative overflow-hidden">
+        <Plus className="h-5 w-5 transition-transform group-hover:rotate-90 duration-300" />
+        <span>Buat Board Baru</span>
+        {/* Remove Sparkles since user deleted it */}
       </button>
 
-      {/* Modal */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-            {/* Header Modal */}
-            <div className="flex items-center justify-between p-4 border-b bg-gray-50">
-              <h3 className="font-bold text-gray-800">Buat Board Baru</h3>
-              <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-red-500 transition">
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Body Form */}
-            <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-5">
-              {/* Input Judul */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Judul Board</label>
-                <input
-                  {...register('title', {
-                    required: 'Judul wajib diisi',
-                    minLength: { value: 3, message: 'Minimal 3 huruf' },
-                  })}
-                  type="text"
-                  placeholder="Misal: Marketing Campaign 2025"
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 text-gray-900 focus:border-transparent outline-none transition"
-                  autoFocus
-                />
-                {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
-              </div>
-
-              {/* Pilihan Tipe Board */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tipe Board</label>
-                <div className="grid grid-cols-2 gap-3">
-                  {/* Option: Private */}
-                  <label
-                    className={`relative flex flex-col items-center gap-2 p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                      selectedType === 'private' ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300 bg-white'
-                    }`}
-                  >
-                    <input type="radio" value="private" {...register('type')} className="sr-only" />
-                    <Lock className={`h-6 w-6 ${selectedType === 'private' ? 'text-blue-600' : 'text-gray-400'}`} />
-                    <span className={`text-sm font-medium ${selectedType === 'private' ? 'text-blue-700' : 'text-gray-600'}`}>Pribadi</span>
-                    <span className="text-xs text-gray-400 text-center">Hanya Anda yang bisa akses</span>
-                  </label>
-
-                  {/* Option: Public/Kolaborasi */}
-                  <label
-                    className={`relative flex flex-col items-center gap-2 p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                      selectedType === 'public' ? 'border-green-500 bg-green-50 ring-2 ring-green-200' : 'border-gray-200 hover:border-gray-300 bg-white'
-                    }`}
-                  >
-                    <input type="radio" value="public" {...register('type')} className="sr-only" />
-                    <Users className={`h-6 w-6 ${selectedType === 'public' ? 'text-green-600' : 'text-gray-400'}`} />
-                    <span className={`text-sm font-medium ${selectedType === 'public' ? 'text-green-700' : 'text-gray-600'}`}>Kolaborasi</span>
-                    <span className="text-xs text-gray-400 text-center">Undang teman via kode</span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Info untuk board kolaborasi */}
-              {selectedType === 'public' && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                  <p className="text-xs text-green-700">
-                    <strong>💡 Tips:</strong> Setelah board dibuat, Anda akan mendapatkan kode unik yang bisa dibagikan ke teman untuk bergabung.
-                  </p>
-                </div>
-              )}
-
-              {/* Footer Buttons */}
-              <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition">
-                  Batal
-                </button>
-                <button type="submit" disabled={isSubmitting} className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition disabled:opacity-50">
-                  {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
-                  {isSubmitting ? 'Menyimpan...' : 'Buat Board'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {Modal}
     </>
   );
 };

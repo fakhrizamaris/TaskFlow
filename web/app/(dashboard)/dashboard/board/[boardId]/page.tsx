@@ -18,23 +18,30 @@ export default async function BoardIdPage({ params }: BoardIdPageProps) {
   if (!session?.user) redirect('/login');
 
   // Ambil data board beserta List dan Card di dalamnya
-  const board = await db.board.findFirst({
-    // Ubah findUnique jadi findFirst
-    where: {
-      id: boardId,
-      // LOGIKA BARU:
-      // Boleh masuk JIKA: Dia pemilik (userId) ATAU dia ada di daftar members
-      OR: [{ userId: session.user.id }, { members: { some: { userId: session.user.id } } }],
-    },
-    include: {
-      lists: {
-        orderBy: { order: 'asc' },
-        include: {
-          cards: { orderBy: { order: 'asc' } },
+  let board;
+  try {
+    board = await db.board.findFirst({
+      // Ubah findUnique jadi findFirst
+      where: {
+        id: boardId,
+        // LOGIKA BARU:
+        // Boleh masuk JIKA: Dia pemilik (userId) ATAU dia ada di daftar members
+        OR: [{ userId: session.user.id }, { members: { some: { userId: session.user.id } } }],
+      },
+      include: {
+        lists: {
+          orderBy: { order: 'asc' },
+          include: {
+            cards: { orderBy: { order: 'asc' } },
+          },
         },
       },
-    },
-  });
+    });
+  } catch (error) {
+    console.error('Error fetching board:', error);
+    // If there's a database error (likely schema mismatch), redirect to dashboard
+    redirect('/dashboard');
+  }
 
   if (!board) redirect('/dashboard');
 
