@@ -1,186 +1,192 @@
 // web/lib/email-templates.ts
 
-// Base styles for email templates
-const baseStyles = `
-  body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    margin: 0; 
-    padding: 0; 
-    background-color: #0a0a0a; 
-    color: #ffffff;
-  }
-  .container { 
-    max-width: 600px; 
-    margin: 0 auto; 
-    padding: 40px 20px; 
-  }
-  .card {
-    background: linear-gradient(135deg, #18181b 0%, #1f1f23 100%);
-    border-radius: 24px;
-    padding: 40px;
-    border: 1px solid #27272a;
-  }
-  .header {
-    text-align: center;
-    margin-bottom: 32px;
-  }
-  .logo {
-    font-size: 32px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .content {
-    color: #d4d4d8;
-    line-height: 1.7;
-    font-size: 16px;
-  }
-  .highlight-box {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-    border: 1px solid rgba(99, 102, 241, 0.3);
-    border-radius: 16px;
-    padding: 24px;
-    margin: 24px 0;
-    text-align: center;
-  }
-  .button {
-    display: inline-block;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    color: #ffffff !important;
-    text-decoration: none;
-    padding: 14px 32px;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 16px;
-    margin-top: 24px;
-  }
-  .footer {
-    text-align: center;
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 1px solid #27272a;
-    color: #71717a;
-    font-size: 14px;
-  }
-  .urgent-badge {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: white;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-block;
-    margin-bottom: 16px;
-  }
-  .deadline-card {
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    border-radius: 12px;
-    padding: 16px;
-    margin: 12px 0;
-  }
-  .deadline-time {
-    font-size: 24px;
-    font-weight: 700;
-    color: #f87171;
-  }
-`;
+// Modern, theme-adaptive email templates
+// Compact HTML to prevent Gmail clipping
 
 export function getWelcomeEmailTemplate(name: string): string {
   const appUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+  const year = new Date().getFullYear();
 
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Selamat Datang di Frello!</title>
-      <style>${baseStyles}</style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="card">
-          <div class="header">
-            <div class="logo">🚀 Frello</div>
-            <p style="color: #71717a; margin-top: 8px;">Task Management Made Simple</p>
-          </div>
-          
-          <div class="content">
-            <h1 style="color: #ffffff; font-size: 28px; margin-bottom: 16px;">
-              Halo ${name}! 👋
-            </h1>
-            
-            <p>
-              Selamat datang di <strong style="color: #a78bfa;">Frello</strong>! 
-              Kami sangat senang Anda bergabung dengan kami.
-            </p>
-            
-            <div class="highlight-box">
-              <p style="margin: 0; color: #a78bfa; font-size: 18px; font-weight: 600;">
-                ✨ Akun Anda Berhasil Dibuat!
-              </p>
-              <p style="margin: 8px 0 0 0; color: #d4d4d8;">
-                Mulai kelola tugas dan proyek Anda dengan lebih efisien.
-              </p>
-            </div>
-            
-            <p>Dengan Frello, Anda bisa:</p>
-            <ul style="color: #d4d4d8; padding-left: 20px;">
-              <li>📋 Membuat board untuk mengatur proyek</li>
-              <li>✅ Menambahkan task dengan status tracking</li>
-              <li>⏰ Mengatur deadline dan reminder</li>
-              <li>👥 Kolaborasi dengan tim</li>
-              <li>🎯 Drag & drop untuk mengelola task</li>
-            </ul>
-            
-            <div style="text-align: center;">
-              <a href="${appUrl}/dashboard" class="button">
-                🎯 Mulai Sekarang
-              </a>
-            </div>
-          </div>
-          
-          <div class="footer">
-            <p>Butuh bantuan? Balas email ini kapan saja.</p>
-            <p style="margin-top: 16px;">
-              Made with 💜 by Frello Team
-            </p>
-          </div>
-        </div>
-      </div>
-    </body>
-    </html>
-  `;
+  return `<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="supported-color-schemes" content="light dark" />
+    <title>Selamat Datang di Frello!</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.6;
+        color: #27272a;
+        background-color: #fff;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #18181b !important;
+          color: #e4e4e7 !important;
+        }
+        .content-text {
+          color: #a1a1aa !important;
+        }
+        .heading {
+          color: #fafafa !important;
+        }
+        .subtext {
+          color: #71717a !important;
+        }
+        .feature-item {
+          background-color: #27272a !important;
+          border-color: #3f3f46 !important;
+        }
+        .divider {
+          border-color: #3f3f46 !important;
+        }
+      }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td style="padding: 40px 24px">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto">
+            <tr>
+              <td style="padding-bottom: 24px">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td style="padding: 20px 24px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%)">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="vertical-align: middle; width: 44px"><div style="font-size: 28px">🚀</div></td>
+                          <td style="vertical-align: middle; padding-left: 14px">
+                            <p style="margin: 0; font-size: 18px; font-weight: 700; color: #fff">Selamat Datang di Frello!</p>
+                            <p style="margin: 2px 0 0 0; font-size: 13px; color: rgba(255, 255, 255, 0.9)">Perjalanan produktivitas Anda dimulai</p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <h2 class="heading" style="margin: 0 0 20px 0; font-size: 24px; font-weight: 700; color: #18181b">Halo ${name} 👋</h2>
+                <p class="content-text" style="margin: 0 0 28px 0; font-size: 16px; line-height: 1.7; color: #52525b">
+                  Kami sangat senang Anda bergabung dengan <strong style="color: #6366f1">Frello</strong>. Siap untuk mengubah cara Anda mengelola tugas dan meningkatkan produktivitas tim?
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="divider" style="border-top: 1px solid #e4e4e7; margin: 0 0 28px 0"></div></td>
+            </tr>
+            <tr>
+              <td><h3 class="heading" style="margin: 0 0 20px 0; font-size: 13px; font-weight: 600; color: #71717a; text-transform: uppercase; letter-spacing: 1px">Yang Bisa Anda Lakukan</h3></td>
+            </tr>
+            <tr>
+              <td>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td width="50%" style="padding-right: 10px; padding-bottom: 14px; vertical-align: top">
+                      <div class="feature-item" style="padding: 16px; background-color: #fafafa; border: 1px solid #e4e4e7; border-radius: 10px">
+                        <div style="font-size: 20px; margin-bottom: 10px">📋</div>
+                        <p class="heading" style="margin: 0; font-size: 14px; font-weight: 600; color: #18181b">Buat Board</p>
+                        <p class="subtext" style="margin: 3px 0 0 0; font-size: 12px; color: #71717a">Organisasi proyek dengan mudah</p>
+                      </div>
+                    </td>
+                    <td width="50%" style="padding-left: 10px; padding-bottom: 14px; vertical-align: top">
+                      <div class="feature-item" style="padding: 16px; background-color: #fafafa; border: 1px solid #e4e4e7; border-radius: 10px">
+                        <div style="font-size: 20px; margin-bottom: 10px">✅</div>
+                        <p class="heading" style="margin: 0; font-size: 14px; font-weight: 600; color: #18181b">Track Status</p>
+                        <p class="subtext" style="margin: 3px 0 0 0; font-size: 12px; color: #71717a">Monitor progress real-time</p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="50%" style="padding-right: 10px; padding-bottom: 14px; vertical-align: top">
+                      <div class="feature-item" style="padding: 16px; background-color: #fafafa; border: 1px solid #e4e4e7; border-radius: 10px">
+                        <div style="font-size: 20px; margin-bottom: 10px">⏰</div>
+                        <p class="heading" style="margin: 0; font-size: 14px; font-weight: 600; color: #18181b">Set Deadline</p>
+                        <p class="subtext" style="margin: 3px 0 0 0; font-size: 12px; color: #71717a">Reminder otomatis via email</p>
+                      </div>
+                    </td>
+                    <td width="50%" style="padding-left: 10px; padding-bottom: 14px; vertical-align: top">
+                      <div class="feature-item" style="padding: 16px; background-color: #fafafa; border: 1px solid #e4e4e7; border-radius: 10px">
+                        <div style="font-size: 20px; margin-bottom: 10px">👥</div>
+                        <p class="heading" style="margin: 0; font-size: 14px; font-weight: 600; color: #18181b">Kolaborasi</p>
+                        <p class="subtext" style="margin: 3px 0 0 0; font-size: 12px; color: #71717a">Undang tim ke board Anda</p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-top: 24px; text-align: center">
+                <a
+                  href="${appUrl}/dashboard"
+                  style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #fff; text-decoration: none; font-size: 15px; font-weight: 600; border-radius: 10px"
+                  >Buka Dashboard →</a
+                >
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td style="padding: 32px 24px; text-align: center">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto">
+            <tr>
+              <td>
+                <div class="divider" style="border-top: 1px solid #e4e4e7; margin-bottom: 24px"></div>
+                <p class="subtext" style="margin: 0 0 6px 0; font-size: 12px; color: #71717a">Ada pertanyaan? Langsung balas email ini.</p>
+                <p style="margin: 0; font-size: 12px; color: #a1a1aa">© ${year} Frello · Task Management Made Simple</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+`;
 }
 
 export function getWelcomeEmailText(name: string): string {
-  const appUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-  return `
-Halo ${name}! 👋
+  const appUrl = process.env.AUTH_URL || 'http://localhost:3000';
+  const year = new Date().getFullYear();
+  return `SELAMAT DATANG DI FRELLO!
+========================
 
-Selamat datang di Frello!
-Akun Anda berhasil dibuat. Mulai kelola tugas dan proyek Anda dengan lebih efisien.
+Halo ${name} 👋
 
-Dengan Frello, Anda bisa:
-- Membuat board untuk mengatur proyek
-- Menambahkan task dengan status tracking
-- Mengatur deadline dan reminder
-- Kolaborasi dengan tim
-- Drag & drop untuk mengelola task
+Kami sangat senang Anda bergabung dengan Frello.
+Siap untuk mengubah cara Anda mengelola tugas?
 
-Mulai sekarang: ${appUrl}/dashboard
+YANG BISA ANDA LAKUKAN:
+- 📋 Buat Board - Organisasi proyek dengan mudah
+- ✅ Track Status - Monitor progress real-time
+- ⏰ Set Deadline - Reminder otomatis via email
+- 👥 Kolaborasi - Undang tim ke board Anda
 
-Butuh bantuan? Balas email ini kapan saja.
+Buka Dashboard: ${appUrl}/dashboard
 
-Made with 💜 by Frello Team
-  `;
+---
+Ada pertanyaan? Langsung balas email ini.
+© ${year} Frello · Task Management Made Simple`;
 }
 
 interface DeadlineTask {
   cardTitle: string;
+  listTitle: string;
   boardTitle: string;
   dueDate: Date;
   timeRemaining: string;
@@ -188,122 +194,187 @@ interface DeadlineTask {
 }
 
 export function getDeadlineReminderTemplate(name: string, tasks: DeadlineTask[]): string {
-  const appUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+  const appUrl = process.env.AUTH_URL || 'http://localhost:3000';
+  const year = new Date().getFullYear();
+  const hasOverdue = tasks.some((t) => t.isOverdue);
+  // Darker gradients for better readability in light mode
+  const headerGradient = hasOverdue ? 'linear-gradient(135deg,#b91c1c 0%,#dc2626 100%)' : 'linear-gradient(135deg,#7c3aed 0%,#8b5cf6 100%)';
 
-  const taskCards = tasks
-    .map(
-      (task) => `
-    <div class="deadline-card" style="
-      background: ${task.isOverdue ? 'rgba(239, 68, 68, 0.15)' : 'rgba(251, 191, 36, 0.1)'};
-      border: 1px solid ${task.isOverdue ? 'rgba(239, 68, 68, 0.4)' : 'rgba(251, 191, 36, 0.3)'};
-    ">
-      <div style="display: flex; justify-content: space-between; align-items: start;">
-        <div>
-          <p style="margin: 0; font-weight: 600; color: #ffffff; font-size: 16px;">
-            ${task.cardTitle}
-          </p>
-          <p style="margin: 4px 0 0 0; color: #71717a; font-size: 14px;">
-            📁 ${task.boardTitle}
-          </p>
-        </div>
-        <div style="text-align: right;">
-          <span class="deadline-time" style="color: ${task.isOverdue ? '#f87171' : '#fbbf24'};">
-            ${task.timeRemaining}
-          </span>
-          <p style="margin: 4px 0 0 0; color: #71717a; font-size: 12px;">
-            ${task.dueDate.toLocaleDateString('id-ID', {
-              weekday: 'short',
-              day: 'numeric',
-              month: 'short',
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
-          </p>
-        </div>
-      </div>
-    </div>
-  `
-    )
+  const taskCount = hasOverdue ? `${tasks.filter((t) => t.isOverdue).length} task perlu tindakan segera` : `${tasks.length} task dengan deadline mendekat`;
+
+  // Helper function to generate Google Calendar URL
+  const getCalendarUrl = (task: DeadlineTask) => {
+    const title = encodeURIComponent(`[Frello] ${task.cardTitle}`);
+    const details = encodeURIComponent(`Board: ${task.boardTitle}\\nList: ${task.listTitle}\\nKartu: ${task.cardTitle}`);
+    const startDate = task.dueDate;
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
+    const formatDate = (d: Date) =>
+      d
+        .toISOString()
+        .replace(/[-:]/g, '')
+        .replace(/\.\d{3}/, '');
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${details}`;
+  };
+
+  const taskRows = tasks
+    .map((task) => {
+      const dateStr = task.dueDate.toLocaleDateString('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      const badgeBg = task.isOverdue ? '#fef2f2' : '#f0fdf4';
+      const badgeColor = task.isOverdue ? '#dc2626' : '#16a34a';
+      const calendarUrl = getCalendarUrl(task);
+
+      return `<tr><td style="padding:16px;background-color:#fafafa;border-radius:12px;margin-bottom:12px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td colspan="2" style="padding-bottom:12px"><span style="display:inline-block;padding:5px 12px;background-color:${badgeBg};color:${badgeColor};font-size:12px;font-weight:700;border-radius:16px">${task.timeRemaining}</span></td></tr><tr><td style="vertical-align:top"><p style="margin:0 0 4px 0;font-size:11px;color:#71717a">📁 Board: <strong style="color:#52525b">${task.boardTitle}</strong></p><p style="margin:0 0 4px 0;font-size:11px;color:#71717a">📋 List: <strong style="color:#52525b">${task.listTitle}</strong></p><p style="margin:0 0 8px 0;font-size:11px;color:#71717a">🎯 Kartu:</p><p class="heading" style="margin:0;font-size:15px;font-weight:600;color:#18181b">${task.cardTitle}</p></td><td style="text-align:right;vertical-align:top;width:130px"><p style="margin:0 0 4px 0;font-size:11px;color:#71717a">⏰ Deadline</p><p class="subtext" style="margin:0 0 12px 0;font-size:12px;color:#52525b;line-height:1.4">${dateStr}</p><a href="${calendarUrl}" target="_blank" style="display:inline-block;padding:6px 10px;background-color:#4285f4;color:#fff;font-size:10px;font-weight:600;border-radius:6px;text-decoration:none">Tambah ke Google Calendar</a></td></tr></table></td></tr><tr><td style="height:10px"></td></tr>`;
+    })
     .join('');
 
-  const hasOverdue = tasks.some((t) => t.isOverdue);
-
-  return `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Deadline Reminder - Frello</title>
-      <style>${baseStyles}</style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="card">
-          <div class="header">
-            <div class="logo">⏰ Frello</div>
-            ${hasOverdue ? '<span class="urgent-badge">⚠️ ADA TASK TERLAMBAT</span>' : '<span style="color: #fbbf24;">Deadline Reminder</span>'}
-          </div>
-          
-          <div class="content">
-            <h1 style="color: #ffffff; font-size: 24px; margin-bottom: 16px;">
-              Halo ${name}! 
-            </h1>
-            
-            <p>
-              ${hasOverdue ? 'Ada beberapa task yang memerlukan perhatian segera:' : 'Berikut task dengan deadline yang mendekat:'}
-            </p>
-            
-            <div style="margin: 24px 0;">
-              ${taskCards}
-            </div>
-            
-            <div style="text-align: center;">
-              <a href="${appUrl}/dashboard" class="button">
-                📋 Lihat Board Saya
-              </a>
-            </div>
-          </div>
-          
-          <div class="footer">
-            <p>Anda menerima email ini karena memiliki task dengan deadline mendekati.</p>
-            <p style="margin-top: 16px;">
-              Made with 💜 by Frello Team
-            </p>
-          </div>
-        </div>
-      </div>
-    </body>
-    </html>
-  `;
+  return `<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Deadline Reminder - Frello</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #18181b !important;
+        }
+        .heading {
+          color: #fafafa !important;
+        }
+        .content-text {
+          color: #a1a1aa !important;
+        }
+        .subtext {
+          color: #71717a !important;
+        }
+        .divider {
+          border-color: #3f3f46 !important;
+        }
+      }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td style="padding: 40px 24px">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto">
+            <tr>
+              <td style="padding-bottom: 24px">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td style="padding:16px 20px;background:${headerGradient};">
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="vertical-align: middle; width: 40px"><div style="font-size: 24px">${hasOverdue ? '⚠️' : '⏰'}</div></td>
+                          <td style="vertical-align: middle; padding-left: 12px">
+                            <p style="margin: 0; font-size: 16px; font-weight: 700; color: #fff">${hasOverdue ? 'Deadline Terlewati' : 'Deadline Reminder'}</p>
+                            <p style="margin: 2px 0 0 0; font-size: 13px; color: rgba(255, 255, 255, 0.9)">${taskCount}</p>
+                          </td>
+                          <td style="vertical-align: middle; text-align: right"><span style="font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.85)">Frello</span></td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p class="content-text" style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.6; color: #52525b">
+                  Halo <strong class="heading" style="color: #18181b">${name}</strong>, berikut ringkasan task yang perlu Anda perhatikan:
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                  ${taskRows}
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-top: 28px; text-align: center">
+                <a
+                  href="${appUrl}/dashboard"
+                  style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #fff; text-decoration: none; font-size: 15px; font-weight: 600; border-radius: 10px"
+                  >Buka Dashboard →</a
+                >
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td style="padding: 32px 24px; text-align: center">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto">
+            <tr>
+              <td>
+                <div class="divider" style="border-top: 1px solid #e4e4e7; margin-bottom: 24px"></div>
+                <p class="subtext" style="margin: 0 0 6px 0; font-size: 12px; color: #71717a">Email ini dikirim karena Anda memiliki task dengan deadline mendekati.</p>
+                <p style="margin: 0; font-size: 12px; color: #a1a1aa">© ${year} Frello · Task Management Made Simple</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+`;
 }
 
 export function getDeadlineReminderText(name: string, tasks: DeadlineTask[]): string {
   const appUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+  const year = new Date().getFullYear();
+  const hasOverdue = tasks.some((t) => t.isOverdue);
 
   const taskList = tasks
-    .map(
-      (task) =>
-        `- ${task.cardTitle} (${task.boardTitle}) - ${task.timeRemaining} - ${task.dueDate.toLocaleDateString('id-ID', {
-          weekday: 'short',
-          day: 'numeric',
-          month: 'short',
-          hour: '2-digit',
-          minute: '2-digit',
-        })}`
-    )
-    .join('\n');
+    .map((task) => {
+      const dateStr = task.dueDate.toLocaleDateString('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      return `${task.isOverdue ? '⚠️' : '📌'} ${task.cardTitle}
+   📁 Board: ${task.boardTitle}
+   📋 List: ${task.listTitle}
+   ⏰ Deadline: ${dateStr}
+   🕐 Sisa Waktu: ${task.timeRemaining}`;
+    })
+    .join('\n\n');
 
-  return `
-Halo ${name}!
+  return `${hasOverdue ? '⚠️ PERHATIAN!' : '⏰ REMINDER'}
+${'='.repeat(40)}
 
-Berikut task dengan deadline yang mendekat:
+Halo ${name},
+
+${hasOverdue ? `${tasks.filter((t) => t.isOverdue).length} task memerlukan tindakan segera:` : `${tasks.length} task dengan deadline mendekat:`}
 
 ${taskList}
 
-Lihat detail: ${appUrl}/dashboard
-
 ---
-Frello - Task Management Made Simple
-  `;
+Buka Dashboard: ${appUrl}/dashboard
+
+© ${year} Frello · Task Management Made Simple`;
 }

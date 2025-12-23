@@ -67,18 +67,22 @@ const getDeadlineStatus = (dueDate: Date | string | null | undefined) => {
 
   const diffMs = due.getTime() - now.getTime();
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  // Calculate calendar day difference (not 24-hour blocks)
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const dueDay = new Date(due.getFullYear(), due.getMonth(), due.getDate());
+  const calendarDayDiff = Math.floor((dueDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
   if (diffMs < 0) {
     return { status: 'overdue', label: 'Terlambat', color: 'text-red-400', bgColor: 'bg-red-500/20', borderColor: 'border-red-500/30' };
-  } else if (diffHours < 3) {
+  } else if (diffHours < 3 && calendarDayDiff === 0) {
     return { status: 'urgent', label: 'Segera!', color: 'text-red-400', bgColor: 'bg-red-500/20', borderColor: 'border-red-500/30' };
-  } else if (diffDays === 0) {
+  } else if (calendarDayDiff === 0) {
     return { status: 'today', label: `Hari ini ${formatTime(due)}`, color: 'text-amber-400', bgColor: 'bg-amber-500/20', borderColor: 'border-amber-500/30' };
-  } else if (diffDays === 1) {
+  } else if (calendarDayDiff === 1) {
     return { status: 'tomorrow', label: `Besok ${formatTime(due)}`, color: 'text-amber-400', bgColor: 'bg-amber-500/20', borderColor: 'border-amber-500/30' };
-  } else if (diffDays <= 3) {
-    return { status: 'soon', label: `${diffDays} hari`, color: 'text-yellow-400', bgColor: 'bg-yellow-500/20', borderColor: 'border-yellow-500/30' };
+  } else if (calendarDayDiff <= 3) {
+    return { status: 'soon', label: `${calendarDayDiff} hari`, color: 'text-yellow-400', bgColor: 'bg-yellow-500/20', borderColor: 'border-yellow-500/30' };
   } else {
     return { status: 'normal', label: formatDateTime(due), color: 'text-zinc-400', bgColor: 'bg-zinc-500/20', borderColor: 'border-zinc-500/30' };
   }

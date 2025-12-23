@@ -11,6 +11,7 @@ interface CardWithRelations {
   dueDate: Date | null;
   status: string;
   list: {
+    title: string;
     board: {
       title: string;
       user: {
@@ -124,21 +125,32 @@ export async function GET(request: NextRequest) {
         if (isOverdue) {
           const overdueDays = Math.abs(diffDays);
           const overdueHours = Math.abs(diffHours) % 24;
+          const overdueMinutes = Math.abs(Math.floor(diffMs / (1000 * 60))) % 60;
           if (overdueDays > 0) {
-            timeRemaining = `Terlambat ${overdueDays}h ${overdueHours}j`;
+            timeRemaining = `Terlambat ${overdueDays} Hari ${overdueHours} Jam`;
+          } else if (overdueHours > 0) {
+            timeRemaining = `Terlambat ${overdueHours} Jam ${overdueMinutes} Menit`;
           } else {
-            timeRemaining = `Terlambat ${overdueHours}j`;
+            timeRemaining = `Terlambat ${overdueMinutes} Menit`;
           }
-        } else if (diffHours < 3) {
-          timeRemaining = `${Math.floor(diffMs / (1000 * 60))} menit`;
-        } else if (diffDays === 0) {
-          timeRemaining = `${diffHours} jam`;
         } else {
-          timeRemaining = `${diffDays} hari`;
+          const totalMinutes = Math.floor(diffMs / (1000 * 60));
+          const hours = Math.floor(totalMinutes / 60);
+          const minutes = totalMinutes % 60;
+
+          if (diffDays >= 1) {
+            const remainingHours = hours % 24;
+            timeRemaining = `${diffDays} Hari ${remainingHours} Jam`;
+          } else if (hours > 0) {
+            timeRemaining = `${hours} Jam ${minutes} Menit`;
+          } else {
+            timeRemaining = `${minutes} Menit`;
+          }
         }
 
         return {
           cardTitle: task.title,
+          listTitle: task.list.title,
           boardTitle: task.list.board.title,
           dueDate,
           timeRemaining,
