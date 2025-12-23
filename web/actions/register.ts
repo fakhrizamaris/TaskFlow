@@ -88,7 +88,7 @@ export async function register(formData: FormData) {
     // Send welcome email (async, don't wait for it)
     sendEmail({
       to: email.toLowerCase(),
-      subject: '🚀 Selamat Datang di Frello!',
+      subject: '🚀 Selamat Datang di Flerro!',
       html: getWelcomeEmailTemplate(name),
       text: getWelcomeEmailText(name),
     }).catch((err) => {

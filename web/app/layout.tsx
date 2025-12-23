@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Frello',
-    template: '%s | Frello',
+    default: 'Flerro',
+    template: '%s | Flerro',
   },
   description: 'Collaborate, manage projects, and reach new productivity peaks.',
   icons: [

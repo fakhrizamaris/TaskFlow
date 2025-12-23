@@ -14,7 +14,7 @@ export function getWelcomeEmailTemplate(name: string): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
     <meta name="supported-color-schemes" content="light dark" />
-    <title>Selamat Datang di Frello!</title>
+    <title>Selamat Datang di Flerro!</title>
     <style>
       :root {
         color-scheme: light dark;
@@ -65,7 +65,7 @@ export function getWelcomeEmailTemplate(name: string): string {
                         <tr>
                           <td style="vertical-align: middle; width: 44px"><div style="font-size: 28px">🚀</div></td>
                           <td style="vertical-align: middle; padding-left: 14px">
-                            <p style="margin: 0; font-size: 18px; font-weight: 700; color: #fff">Selamat Datang di Frello!</p>
+                            <p style="margin: 0; font-size: 18px; font-weight: 700; color: #fff">Selamat Datang di Flerro!</p>
                             <p style="margin: 2px 0 0 0; font-size: 13px; color: rgba(255, 255, 255, 0.9)">Perjalanan produktivitas Anda dimulai</p>
                           </td>
                         </tr>
@@ -79,7 +79,7 @@ export function getWelcomeEmailTemplate(name: string): string {
               <td>
                 <h2 class="heading" style="margin: 0 0 20px 0; font-size: 24px; font-weight: 700; color: #18181b">Halo ${name} 👋</h2>
                 <p class="content-text" style="margin: 0 0 28px 0; font-size: 16px; line-height: 1.7; color: #52525b">
-                  Kami sangat senang Anda bergabung dengan <strong style="color: #6366f1">Frello</strong>. Siap untuk mengubah cara Anda mengelola tugas dan meningkatkan produktivitas tim?
+                  Kami sangat senang Anda bergabung dengan <strong style="color: #6366f1">Flerro</strong>. Siap untuk mengubah cara Anda mengelola tugas dan meningkatkan produktivitas tim?
                 </p>
               </td>
             </tr>
@@ -148,7 +148,7 @@ export function getWelcomeEmailTemplate(name: string): string {
               <td>
                 <div class="divider" style="border-top: 1px solid #e4e4e7; margin-bottom: 24px"></div>
                 <p class="subtext" style="margin: 0 0 6px 0; font-size: 12px; color: #71717a">Ada pertanyaan? Langsung balas email ini.</p>
-                <p style="margin: 0; font-size: 12px; color: #a1a1aa">© ${year} Frello · Task Management Made Simple</p>
+                <p style="margin: 0; font-size: 12px; color: #a1a1aa">© ${year} Flerro · Task Management Made Simple</p>
               </td>
             </tr>
           </table>
@@ -168,7 +168,7 @@ export function getWelcomeEmailText(name: string): string {
 
 Halo ${name} 👋
 
-Kami sangat senang Anda bergabung dengan Frello.
+Kami sangat senang Anda bergabung dengan Flerro.
 Siap untuk mengubah cara Anda mengelola tugas?
 
 YANG BISA ANDA LAKUKAN:
@@ -181,7 +181,7 @@ Buka Dashboard: ${appUrl}/dashboard
 
 ---
 Ada pertanyaan? Langsung balas email ini.
-© ${year} Frello · Task Management Made Simple`;
+© ${year} Flerro · Task Management Made Simple`;
 }
 
 interface DeadlineTask {
@@ -204,7 +204,7 @@ export function getDeadlineReminderTemplate(name: string, tasks: DeadlineTask[])
 
   // Helper function to generate Google Calendar URL
   const getCalendarUrl = (task: DeadlineTask) => {
-    const title = encodeURIComponent(`[Frello] ${task.cardTitle}`);
+    const title = encodeURIComponent(`[Flerro] ${task.cardTitle}`);
     const details = encodeURIComponent(`Board: ${task.boardTitle}\\nList: ${task.listTitle}\\nKartu: ${task.cardTitle}`);
     const startDate = task.dueDate;
     const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
@@ -240,7 +240,7 @@ export function getDeadlineReminderTemplate(name: string, tasks: DeadlineTask[])
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
-    <title>Deadline Reminder - Frello</title>
+    <title>Deadline Reminder - Flerro</title>
     <style>
       :root {
         color-scheme: light dark;
@@ -286,7 +286,7 @@ export function getDeadlineReminderTemplate(name: string, tasks: DeadlineTask[])
                             <p style="margin: 0; font-size: 16px; font-weight: 700; color: #fff">${hasOverdue ? 'Deadline Terlewati' : 'Deadline Reminder'}</p>
                             <p style="margin: 2px 0 0 0; font-size: 13px; color: rgba(255, 255, 255, 0.9)">${taskCount}</p>
                           </td>
-                          <td style="vertical-align: middle; text-align: right"><span style="font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.85)">Frello</span></td>
+                          <td style="vertical-align: middle; text-align: right"><span style="font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.85)">Flerro</span></td>
                         </tr>
                       </table>
                     </td>
@@ -329,7 +329,7 @@ export function getDeadlineReminderTemplate(name: string, tasks: DeadlineTask[])
               <td>
                 <div class="divider" style="border-top: 1px solid #e4e4e7; margin-bottom: 24px"></div>
                 <p class="subtext" style="margin: 0 0 6px 0; font-size: 12px; color: #71717a">Email ini dikirim karena Anda memiliki task dengan deadline mendekati.</p>
-                <p style="margin: 0; font-size: 12px; color: #a1a1aa">© ${year} Frello · Task Management Made Simple</p>
+                <p style="margin: 0; font-size: 12px; color: #a1a1aa">© ${year} Flerro · Task Management Made Simple</p>
               </td>
             </tr>
           </table>
@@ -376,5 +376,5 @@ ${taskList}
 ---
 Buka Dashboard: ${appUrl}/dashboard
 
-© ${year} Frello · Task Management Made Simple`;
+© ${year} Flerro · Task Management Made Simple`;
 }

@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
       // Send email
       const result = await sendEmail({
         to: user.email,
-        subject: formattedTasks.some((t) => t.isOverdue) ? '⚠️ Ada Task Terlambat! - Frello' : '⏰ Deadline Reminder - Frello',
+        subject: formattedTasks.some((t) => t.isOverdue) ? '⚠️ Ada Task Terlambat! - Flerro' : '⏰ Deadline Reminder - Flerro',
         html: getDeadlineReminderTemplate(user.name || 'User', formattedTasks),
         text: getDeadlineReminderText(user.name || 'User', formattedTasks),
       });

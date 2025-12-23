@@ -28,7 +28,7 @@ export async function sendEmail({ to, subject, html, text }: SendEmailOptions): 
     }
 
     const info = await transporter.sendMail({
-      from: `"${process.env.SMTP_FROM_NAME || 'Frello'}" <${process.env.SMTP_USER}>`,
+      from: `"${process.env.SMTP_FROM_NAME || 'Flerro'}" <${process.env.SMTP_USER}>`,
       to,
       subject,
       text: text || '',
