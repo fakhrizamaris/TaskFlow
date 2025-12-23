@@ -42,21 +42,21 @@ export const ListForm = ({ boardId }: ListFormProps) => {
   if (isEditing) {
     return (
       <li className="w-[272px] shrink-0 select-none">
-        <form ref={formRef} action={onSubmit} className="bg-white/80 p-3 rounded-md shadow-md space-y-3">
+        <form ref={formRef} action={onSubmit} className="bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 p-3 rounded-xl shadow-lg space-y-3">
           <input
             ref={inputRef}
             name="title"
-            className="text-sm w-full px-2 py-1.5 rounded-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder:text-gray-500"
+            className="text-sm w-full px-3 py-2 rounded-lg border border-zinc-600/50 bg-zinc-900/80 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 text-zinc-200 placeholder:text-zinc-500"
             placeholder="Beri nama list..."
             onKeyDown={(e) => {
               if (e.key === 'Escape') disableEditing();
             }}
           />
-          <div className="flex items-center gap-x-1">
-            <button type="submit" className="bg-blue-600 text-white text-sm px-3 py-1.5 rounded font-medium hover:bg-blue-700 transition">
+          <div className="flex items-center gap-x-2">
+            <button type="submit" className="bg-indigo-600 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition">
               Tambahkan List
             </button>
-            <button type="button" onClick={disableEditing} className="p-1.5 text-gray-500 hover:bg-gray-200 rounded">
+            <button type="button" onClick={disableEditing} className="p-2 text-zinc-400 hover:bg-zinc-700/50 rounded-lg transition">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -67,7 +67,10 @@ export const ListForm = ({ boardId }: ListFormProps) => {
 
   return (
     <li className="w-[272px] shrink-0 select-none">
-      <button onClick={enableEditing} className="w-full rounded-md bg-white/50 hover:bg-white/80 transition p-3 flex items-center font-medium text-sm text-white hover:text-black cursor-pointer">
+      <button
+        onClick={enableEditing}
+        className="w-full rounded-xl bg-zinc-800/30 hover:bg-zinc-800/50 border border-dashed border-zinc-700/50 hover:border-zinc-600/50 transition p-3 flex items-center font-medium text-sm text-zinc-400 hover:text-zinc-200 cursor-pointer backdrop-blur-sm"
+      >
         <Plus className="h-4 w-4 mr-2" />
         Tambahkan List
       </button>

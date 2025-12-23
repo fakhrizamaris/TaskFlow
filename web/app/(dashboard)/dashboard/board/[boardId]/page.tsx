@@ -39,13 +39,18 @@ export default async function BoardIdPage({ params }: BoardIdPageProps) {
   if (!board) redirect('/dashboard');
 
   return (
-    <div className="relative h-full bg-blue-500 min-h-screen overflow-hidden">
+    <div className="gradient-bg grid-pattern relative h-full min-h-screen overflow-hidden">
+      {/* Floating Orbs */}
+      <div className="floating-orb orb-1" />
+      <div className="floating-orb orb-2" />
+      <div className="floating-orb orb-3" />
+
       {/* 1. Pasang Navbar di sini */}
       <BoardNavbar data={board} />
 
       {/* 2. Konten List Container */}
       {/* Tambahkan pt-20 agar tidak ketutup navbar */}
-      <main className="h-full overflow-x-auto p-4 pt-20">
+      <main className="relative z-10 h-full overflow-x-auto p-4 pt-20">
         <ListContainer boardId={boardId} data={board.lists} />
       </main>
     </div>

@@ -35,7 +35,7 @@ export const ListItem = ({ data, index }: ListItemProps) => {
         <li {...provided.draggableProps} ref={provided.innerRef} className="h-full w-[272px] shrink-0 select-none relative" onMouseEnter={onMouseEnter}>
           {/* Visual Indicator for Remote Hover */}
           {isHoveredByOther && (
-            <div className="absolute -top-10 left-0 bg-blue-600 text-white text-xs px-2 py-1 rounded-full shadow-md z-50 flex items-center gap-1 animate-in fade-in zoom-in duration-200">
+            <div className="absolute -top-10 left-0 bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-full shadow-lg z-50 flex items-center gap-1.5 animate-in fade-in zoom-in duration-200 border border-indigo-400/30">
               {activeUser.userImage ? (
                 <img src={activeUser.userImage} className="w-4 h-4 rounded-full" />
               ) : (
@@ -45,15 +45,18 @@ export const ListItem = ({ data, index }: ListItemProps) => {
             </div>
           )}
 
-          <div className={`w-full rounded-md bg-[#f1f2f4] shadow-md pb-2 transition-colors duration-300 ${isHoveredByOther ? 'ring-2 ring-blue-500 ring-offset-2' : ''}`}>
+          <div
+            className={`w-full rounded-xl bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 shadow-lg pb-2 transition-colors duration-300 ${isHoveredByOther ? 'ring-2 ring-indigo-500 ring-offset-2 ring-offset-transparent' : ''}`}
+          >
             {/* Header List (Drag Handle) */}
-            <div {...provided.dragHandleProps} className="pt-2 px-2 text-sm font-semibold flex justify-between items-center gap-x-2 cursor-grab active:cursor-grabbing">
-              <div className="flex items-center gap-x-1">
-                <GripVertical className="h-4 w-4 text-gray-400" />
-                <div className="border-transparent px-1.5 py-1 text-sm font-medium text-black truncate">{data.title}</div>
+            <div {...provided.dragHandleProps} className="pt-3 px-3 text-sm font-semibold flex justify-between items-center gap-x-2 cursor-grab active:cursor-grabbing">
+              <div className="flex items-center gap-x-2">
+                <GripVertical className="h-4 w-4 text-zinc-500" />
+                <div className="px-1.5 py-1 text-sm font-semibold text-zinc-200">{data.title}</div>
+                <span className="text-xs text-zinc-500 bg-zinc-700/50 px-2 py-0.5 rounded">{data.cards.length}</span>
               </div>
-              <button className="p-1 hover:bg-gray-200 rounded transition">
-                <MoreHorizontal className="h-4 w-4 text-gray-500" />
+              <button className="p-1.5 hover:bg-zinc-700/50 rounded-lg transition">
+                <MoreHorizontal className="h-4 w-4 text-zinc-400" />
               </button>
             </div>
 

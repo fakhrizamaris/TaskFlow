@@ -18,11 +18,11 @@ export const CardItem = ({ data, index }: CardItemProps) => {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
           className={`
-            truncate border-2 border-transparent py-2 px-3 text-sm 
-            bg-white rounded-md shadow-sm cursor-grab active:cursor-grabbing
-            text-gray-700 font-medium
-            hover:border-blue-400 hover:shadow-md transition-all
-            ${snapshot.isDragging ? 'rotate-2 shadow-lg ring-2 ring-blue-400' : ''}
+            truncate border border-zinc-700/50 py-3 px-4 text-sm 
+            bg-zinc-900/80 rounded-lg shadow-sm cursor-grab active:cursor-grabbing
+            text-zinc-300 font-medium
+            hover:border-indigo-500/50 hover:shadow-md transition-all
+            ${snapshot.isDragging ? 'rotate-2 shadow-xl ring-2 ring-indigo-500/50 bg-zinc-800' : ''}
           `}
         >
           {data.title}

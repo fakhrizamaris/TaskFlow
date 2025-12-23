@@ -148,7 +148,11 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-      {isDragByOther && <div className="fixed bottom-4 right-4 bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-bounce">✋ {activeInteractions['board'].userName} sedang memindahkan kartu...</div>}
+      {isDragByOther && (
+        <div className="fixed bottom-4 right-4 bg-indigo-600 text-white px-4 py-2 rounded-xl shadow-xl z-50 animate-bounce border border-indigo-400/30 backdrop-blur-sm">
+          ✋ {activeInteractions['board'].userName} sedang memindahkan kartu...
+        </div>
+      )}
       <Droppable droppableId="lists" type="list" direction="horizontal">
         {(provided) => (
           <ol {...provided.droppableProps} ref={provided.innerRef} className="flex gap-x-3 h-full items-start">

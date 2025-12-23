@@ -42,7 +42,7 @@ export const CardForm = ({ listId, isEditing, enableEditing, disableEditing }: C
 
   if (isEditing) {
     return (
-      <form ref={formRef} action={onSubmit} className="m-1 py-0.5 px-1 space-y-4">
+      <form ref={formRef} action={onSubmit} className="m-1 py-0.5 px-1 space-y-3">
         <textarea
           autoFocus
           id="title"
@@ -55,10 +55,10 @@ export const CardForm = ({ listId, isEditing, enableEditing, disableEditing }: C
             }
           }}
           onChange={onTyping} // Emit typing event
-          className="w-full resize-none shadow-sm rounded-md border-none focus:ring-2 ring-blue-500 p-2 text-sm text-black placeholder:text-gray-400"
+          className="w-full resize-none shadow-sm rounded-lg border border-zinc-600/50 bg-zinc-900/80 focus:ring-2 ring-indigo-500/50 focus:border-indigo-500/50 p-3 text-sm text-zinc-200 placeholder:text-zinc-500"
         />
-        <div className="flex items-center gap-x-1">
-          <button type="submit" className="w-full bg-blue-600 text-white hover:bg-blue-700 text-sm py-1.5 px-3 rounded font-medium">
+        <div className="flex items-center gap-x-2">
+          <button type="submit" className="flex-1 bg-indigo-600 text-white hover:bg-indigo-700 text-sm py-2 px-3 rounded-lg font-medium transition">
             Tambah
           </button>
           <button
@@ -67,7 +67,7 @@ export const CardForm = ({ listId, isEditing, enableEditing, disableEditing }: C
               emitInteraction('typing-end', `typing-${listId}`);
             }}
             type="button"
-            className="p-1.5 text-gray-500 hover:bg-gray-200 rounded"
+            className="p-2 text-zinc-400 hover:bg-zinc-700/50 rounded-lg transition"
           >
             <X className="h-4 w-4" />
           </button>
@@ -79,8 +79,8 @@ export const CardForm = ({ listId, isEditing, enableEditing, disableEditing }: C
   if (isTypingByOther) {
     return (
       <div className="pt-2 px-2 pb-2">
-        <div className="flex items-center gap-2 text-xs text-gray-500 italic animate-pulse">
-          <div className="w-4 h-4 rounded-full bg-gray-300 flex items-center justify-center text-[8px] font-bold text-gray-600">{activeUser.userName.charAt(0)}</div>
+        <div className="flex items-center gap-2 text-xs text-indigo-400 italic animate-pulse">
+          <div className="w-4 h-4 rounded-full bg-indigo-600/30 flex items-center justify-center text-[8px] font-bold text-indigo-300">{activeUser.userName.charAt(0)}</div>
           {activeUser.userName} sedang mengetik...
         </div>
       </div>
@@ -89,7 +89,7 @@ export const CardForm = ({ listId, isEditing, enableEditing, disableEditing }: C
 
   return (
     <div className="pt-2 px-2">
-      <button onClick={enableEditing} className="h-auto px-2 py-1.5 w-full justify-start text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded text-sm font-medium flex items-center gap-x-1 transition cursor-pointer">
+      <button onClick={enableEditing} className="h-auto px-2 py-2 w-full justify-start text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700/50 rounded-lg text-sm font-medium flex items-center gap-x-2 transition cursor-pointer">
         <Plus className="h-4 w-4" />
         Tambah Kartu
       </button>

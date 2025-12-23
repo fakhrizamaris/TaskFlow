@@ -54,7 +54,7 @@ export const JoinBoardButton = () => {
   return (
     <>
       {/* Tombol Join Board */}
-      <button onClick={() => setIsOpen(true)} className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-5 py-3 text-sm font-semibold text-white shadow-md hover:bg-green-500 hover:shadow-lg transition-all cursor-pointer">
+      <button onClick={() => setIsOpen(true)} className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all cursor-pointer">
         <UserPlus className="h-5 w-5" />
         Gabung Board
       </button>

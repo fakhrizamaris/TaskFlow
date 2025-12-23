@@ -10,7 +10,10 @@ export const LogoutButton = () => {
   };
 
   return (
-    <button onClick={handleLogout} className="inline-flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer">
+    <button
+      onClick={handleLogout}
+      className="inline-flex items-center gap-2 rounded-lg bg-zinc-800/50 border border-zinc-700/50 px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-rose-500/20 hover:text-rose-400 hover:border-rose-500/30 transition-all cursor-pointer"
+    >
       <LogOut className="h-4 w-4" />
       Logout
     </button>

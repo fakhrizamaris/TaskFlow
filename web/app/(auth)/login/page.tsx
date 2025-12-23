@@ -63,7 +63,7 @@ export default function LoginPage() {
             <Link href="/" className="inline-flex items-center gap-3 mb-6">
               <div className="relative">
                 <div className="absolute inset-0 bg-indigo-500 blur-lg opacity-50" />
-                <img src="/favicon.png" alt="Flerro Logo" className="relative h-12 w-12" />
+                <img src="/favicon.png" alt="Flerro Logo" className="relative h-8 w-8" />
               </div>
               <span className="text-3xl font-bold gradient-text-glow">Flerro</span>
             </Link>
@@ -110,26 +110,16 @@ export default function LoginPage() {
             </div>
 
             {/* Login Button */}
-            <button type="submit" disabled={isLoading} className="btn-primary w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed">
-              {isLoading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : (
-                <>
-                  Masuk
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </>
-              )}
+            <button type="submit" disabled={isLoading} className="btn-primary w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer">
+              {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <>Masuk</>}
             </button>
           </form>
 
           {/* Divider */}
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-zinc-700/50" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-[#18181b] text-zinc-500">atau lanjutkan dengan</span>
-            </div>
+          <div className="flex items-center gap-4 mb-6">
+            <div className="flex-1 border-t border-zinc-700/50" />
+            <span className="text-sm text-zinc-500">atau lanjutkan dengan</span>
+            <div className="flex-1 border-t border-zinc-700/50" />
           </div>
 
           {/* Social Login Buttons */}
@@ -174,19 +164,18 @@ export default function LoginPage() {
             </button>
           </div>
 
-          {/* Demo Notice */}
-          <div className="mt-8 p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/30">
-            <div className="flex items-start gap-3">
-              <Sparkles className="h-5 w-5 text-indigo-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm text-zinc-300 font-medium mb-1">Demo Mode</p>
-                <p className="text-xs text-zinc-400">Ini adalah project portfolio. Gunakan login Google atau GitHub untuk mengakses demo.</p>
-              </div>
-            </div>
+          {/* Register Link */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-zinc-400">
+              Belum punya akun?{' '}
+              <Link href="/register" className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors">
+                Daftar sekarang
+              </Link>
+            </p>
           </div>
 
           {/* Back to Home */}
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <Link href="/" className="text-sm text-zinc-500 hover:text-white transition-colors">
               ← Kembali ke Beranda
             </Link>

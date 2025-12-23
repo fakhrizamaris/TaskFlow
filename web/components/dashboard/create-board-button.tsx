@@ -45,7 +45,7 @@ export const CreateBoardButton = () => {
   return (
     <>
       {/* Tombol Pemicu (Trigger) */}
-      <button id="create-board-btn" onClick={() => setIsOpen(true)} className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-md hover:bg-blue-500 hover:shadow-lg transition-all cursor-pointer">
+      <button id="create-board-btn" onClick={() => setIsOpen(true)} className="btn-primary inline-flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg cursor-pointer">
         <Plus className="h-5 w-5" />
         Buat Board Baru
       </button>
