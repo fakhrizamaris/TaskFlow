@@ -230,7 +230,32 @@ export function getDeadlineReminderTemplate(name: string, tasks: DeadlineTask[])
       const badgeColor = task.isOverdue ? '#dc2626' : '#16a34a';
       const calendarUrl = getCalendarUrl(task);
 
-      return `<tr><td style="padding:16px;background-color:#fafafa;border-radius:12px;margin-bottom:12px"><table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td colspan="2" style="padding-bottom:12px"><span style="display:inline-block;padding:5px 12px;background-color:${badgeBg};color:${badgeColor};font-size:12px;font-weight:700;border-radius:16px">${task.timeRemaining}</span></td></tr><tr><td style="vertical-align:top"><p style="margin:0 0 4px 0;font-size:11px;color:#71717a">📁 Board: <strong style="color:#52525b">${task.boardTitle}</strong></p><p style="margin:0 0 4px 0;font-size:11px;color:#71717a">📋 List: <strong style="color:#52525b">${task.listTitle}</strong></p><p style="margin:0 0 8px 0;font-size:11px;color:#71717a">🎯 Kartu:</p><p class="heading" style="margin:0;font-size:12px;font-weight:500;color:#18181b">${task.cardTitle}</p></td><td style="text-align:right;vertical-align:top;width:130px"><p style="margin:0 0 4px 0;font-size:11px;color:#71717a">⏰ Deadline</p><p class="subtext" style="margin:0 0 12px 0;font-size:12px;color:#52525b;line-height:1.4">${dateStr}</p><a href="${calendarUrl}" target="_blank" style="display:inline-block;padding:6px 10px;background-color:#4285f4;color:#fff;font-size:10px;font-weight:600;border-radius:6px;text-decoration:none">Tambah ke Calendar</a></td></tr></table></td></tr><tr><td style="height:10px"></td></tr>`;
+      return `<tr>
+  <td style="padding: 16px; background-color: #fafafa; border-radius: 12px; margin-bottom: 12px">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td colspan="2" style="padding-bottom: 12px"><span style="display:inline-block;padding:5px 12px;background-color:${badgeBg};color:${badgeColor};font-size:12px;font-weight:700;border-radius:16px">${task.timeRemaining}</span></td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top">
+          <p style="margin: 0 0 4px 0; font-size: 11px; color: #71717a">📁 Board: <strong style="color: #52525b">${task.boardTitle}</strong></p>
+          <p style="margin: 0 0 4px 0; font-size: 11px; color: #71717a">📋 List: <strong style="color: #52525b">${task.listTitle}</strong></p>
+          <p style="margin: 0 0 8px 0; font-size: 11px; color: #71717a">🎯 Kartu:</p>
+          <p class="heading" style="margin: 0; font-size: 12px; font-weight: 500; color: #18181b">${task.cardTitle}</p>
+        </td>
+        <td style="text-align: right; vertical-align: top; width: 130px">
+          <p style="margin: 0 0 4px 0; font-size: 11px; color: #71717a">⏰ Deadline</p>
+          <p class="subtext" style="margin: 0 0 12px 0; font-size: 12px; color: #52525b; line-height: 1.4">${dateStr}</p>
+          <a href="${calendarUrl}" target="_blank" style="display: inline-block; padding: 6px 10px; background-color: #4285f4; color: #fff; font-size: 10px; font-weight: 600; border-radius: 6px; text-decoration: none">Tambah ke Calendar</a>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td style="height: 10px"></td>
+</tr>
+`;
     })
     .join('');
 
