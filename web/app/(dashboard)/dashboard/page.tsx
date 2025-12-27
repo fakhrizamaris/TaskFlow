@@ -14,13 +14,13 @@ import { Lock, Users, Calendar, ArrowRight, Sparkles, Clock } from 'lucide-react
 
 export default async function DashboardPage() {
   const session = await auth();
-  if (!session?.user) redirect('/login');
+  if (!session?.user?.email) redirect('/login');
 
   // Ambil data user beserta:
   // 1. boards: Board yang dimiliki user
   // 2. memberships: Board di mana user adalah member (join via invite)
   const user = await db.user.findUnique({
-    where: { email: session.user.email! },
+    where: { email: session.user.email },
     include: {
       boards: {
         orderBy: { updatedAt: 'desc' },
