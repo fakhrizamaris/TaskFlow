@@ -33,6 +33,8 @@ export default async function DashboardPage() {
     },
   });
 
+  if (!user) redirect('/login');
+
   const showTutorial = user?.tutorialCompleted === false;
   const ownedBoards = user?.boards || [];
   const joinedBoards = user?.memberships?.map((m) => m.board) || [];
@@ -44,6 +46,39 @@ export default async function DashboardPage() {
   // Get current time greeting
   const hour = new Date().getHours();
   const greeting = hour < 12 ? 'Selamat Pagi' : hour < 18 ? 'Selamat Siang' : 'Selamat Malam';
+
+  // Calculate Real Stats
+  const allBoardIds = [...ownedBoards.map((b) => b.id), ...joinedBoards.map((b) => b.id)];
+
+  const [completedTasksCount, pendingInProgressCount, uniqueCollaboratorsCount] = await Promise.all([
+    // Count 'DONE' tasks in all visible boards
+    db.card.count({
+      where: {
+        list: { boardId: { in: allBoardIds } },
+        status: 'DONE',
+      },
+    }),
+    // Count 'TODO' or 'IN_PROGRESS' tasks
+    db.card.count({
+      where: {
+        list: { boardId: { in: allBoardIds } },
+        status: { not: 'DONE' },
+      },
+    }),
+    // Count unique collaborators (excluding self)
+    db.boardMember
+      .findMany({
+        where: {
+          boardId: { in: allBoardIds },
+          userId: { not: user.id },
+        },
+        distinct: ['userId'],
+        select: {
+          userId: true,
+        },
+      })
+      .then((members) => members.length),
+  ]);
 
   return (
     <div className="gradient-bg grid-pattern min-h-screen p-4 sm:p-8">
@@ -74,14 +109,7 @@ export default async function DashboardPage() {
         </header>
 
         {/* Stats Overview - Only show when there are boards */}
-        {hasAnyBoard && (
-          <StatsOverview
-            totalBoards={ownedBoards.length + joinedBoards.length}
-            completedTasks={ownedBoards.length * 3} // Placeholder values
-            pendingTasks={ownedBoards.length * 2}
-            collaborators={joinedBoards.length + 1}
-          />
-        )}
+        {hasAnyBoard && <StatsOverview totalBoards={ownedBoards.length + joinedBoards.length} completedTasks={completedTasksCount} pendingTasks={pendingInProgressCount} collaborators={uniqueCollaboratorsCount} />}
 
         {/* Quick Actions Bar */}
         {hasAnyBoard && <QuickActions recentBoards={recentBoards.map((b) => ({ id: b.id, title: b.title, updatedAt: b.updatedAt }))} />}
@@ -192,7 +220,7 @@ export default async function DashboardPage() {
 
         {/* Footer */}
         <footer className="mt-12 pt-6 border-t border-zinc-800 text-center">
-          <p className="text-xs text-zinc-600">TaskFlow • Kelola tugas dengan lebih efisien</p>
+          <p className="text-xs text-zinc-600">Flerro • Kelola tugas dengan lebih efisien</p>
         </footer>
       </div>
     </div>

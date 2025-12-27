@@ -1,0 +1,29 @@
+﻿
+[1m[46m RUN [49m[22m [36mv4.0.16 [39m[90mD:/TaskFlow/web[39m
+
+ [32mΓ£ô[39m test/components/dashboard/stats-overview.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[33m 1072[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m should start with zero animated values [33m 599[2mms[22m[39m
+ [32mΓ£ô[39m test/components/dashboard/board-card.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[33m 992[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should have link to board page [33m 413[2mms[22m[39m
+ [32mΓ£ô[39m app/page.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 1273[2mms[22m[39m
+     [33m[2mΓ£ô[22m[39m merender link ke login [33m 753[2mms[22m[39m
+ [32mΓ£ô[39m test/lib/email-templates.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 59[2mms[22m[39m
+ [32mΓ£ô[39m test/lib/utils.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 57[2mms[22m[39m
+ [32mΓ£ô[39m test/components/tutorial/onboarding-tour.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[32m 78[2mms[22m[39m
+ [32mΓ£ô[39m test/actions/create-board.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32mΓ£ô[39m test/actions/create-list.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32mΓ£ô[39m test/actions/join-board.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32mΓ£ô[39m test/actions/update-card-deadline.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32mΓ£ô[39m test/actions/delete-list.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32mΓ£ô[39m test/actions/update-card-status.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32mΓ£ô[39m test/integration/board-workflow.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32mΓ£ô[39m test/actions/invite-member.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32mΓ£ô[39m test/actions/create-card.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32mΓ£ô[39m test/actions/delete-board.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32mΓ£ô[39m components/sanity.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 5[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m17 passed[39m[22m[90m (17)[39m
+[2m      Tests [22m [1m[32m144 passed[39m[22m[90m (144)[39m
+[2m   Start at [22m 11:43:07
+[2m   Duration [22m 22.22s[2m (transform 1.85s, setup 6.92s, import 6.02s, tests 3.71s, environment 38.18s)[22m
+

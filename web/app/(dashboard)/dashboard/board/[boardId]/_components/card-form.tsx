@@ -1,4 +1,3 @@
-// web/app/(dashboard)/board/[boardId]/_components/card-form.tsx
 'use client';
 
 import { useState, useRef, ElementRef } from 'react';
@@ -19,8 +18,6 @@ export const CardForm = ({ listId, isEditing, enableEditing, disableEditing }: C
   const formRef = useRef<ElementRef<'form'>>(null);
   const { emitBoardUpdate, emitInteraction, activeInteractions } = useBoardSocketContext();
 
-  // Check if someone else is typing in this list
-  // We use listId as targetId for typing in a list
   const activeUser = activeInteractions[`typing-${listId}`];
   const isTypingByOther = activeUser && activeUser.type === 'typing-start';
 
@@ -29,11 +26,10 @@ export const CardForm = ({ listId, isEditing, enableEditing, disableEditing }: C
     formData.append('boardId', params.boardId as string);
 
     await createCard(formData);
-    formRef.current?.reset(); // Kosongkan form setelah simpan
+    formRef.current?.reset();
 
-    // ✅ Notify user lain bahwa ada kartu baru
     emitBoardUpdate('Kartu baru ditambahkan');
-    emitInteraction('typing-end', `typing-${listId}`); // Stop typing indicator
+    emitInteraction('typing-end', `typing-${listId}`);
   };
 
   const onTyping = () => {

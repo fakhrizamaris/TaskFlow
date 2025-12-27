@@ -1,14 +1,14 @@
-// web/actions/join-board.ts
+// actions/join-board.ts
 'use server';
 
-import { auth } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { defaultDeps, type Dependencies } from '@/lib/deps';
 import { revalidatePath } from 'next/cache';
 
-export async function joinBoard(formData: FormData) {
+// Internal function yang bisa di-test
+export async function _joinBoard(formData: FormData, deps: Dependencies = defaultDeps) {
   const inviteCode = (formData.get('inviteCode') as string)?.toUpperCase().trim();
 
-  const session = await auth();
+  const session = await deps.auth();
   if (!session?.user || !session.user.id) {
     return { error: 'Anda harus login terlebih dahulu!' };
   }
@@ -18,7 +18,7 @@ export async function joinBoard(formData: FormData) {
   }
 
   // 1. Cari board dengan invite code tersebut
-  const board = await db.board.findFirst({
+  const board = await deps.db.board.findFirst({
     where: { inviteCode },
     select: { id: true, title: true, userId: true },
   });
@@ -33,7 +33,7 @@ export async function joinBoard(formData: FormData) {
   }
 
   // 3. Cek apakah sudah menjadi member?
-  const existingMember = await db.boardMember.findUnique({
+  const existingMember = await deps.db.boardMember.findUnique({
     where: {
       boardId_userId: {
         boardId: board.id,
@@ -47,7 +47,7 @@ export async function joinBoard(formData: FormData) {
   }
 
   // 4. Tambahkan sebagai member baru
-  await db.boardMember.create({
+  await deps.db.boardMember.create({
     data: {
       boardId: board.id,
       userId: session.user.id,
@@ -63,4 +63,9 @@ export async function joinBoard(formData: FormData) {
     message: `Berhasil bergabung ke board "${board.title}"!`,
     boardId: board.id,
   };
+}
+
+// Server action wrapper
+export async function joinBoard(formData: FormData) {
+  return _joinBoard(formData);
 }

@@ -208,6 +208,7 @@ export const JoinBoardButton = () => {
   return (
     <>
       <button
+        id="join-board-btn"
         onClick={() => setIsOpen(true)}
         className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all duration-300 cursor-pointer relative overflow-hidden"
       >

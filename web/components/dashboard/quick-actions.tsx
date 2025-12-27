@@ -1,8 +1,10 @@
 // web/components/dashboard/quick-actions.tsx
 'use client';
 
-import { useState } from 'react';
-import { Keyboard, Search, Clock, Star, ChevronRight, Sparkles, Command } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Keyboard, Search, Clock, Star, ChevronRight, Sparkles, Command, Layout, FileText, Loader2 } from 'lucide-react';
+import { searchDashboard } from '@/actions/search';
+import Link from 'next/link';
 
 type QuickActionsProps = {
   recentBoards?: Array<{
@@ -15,6 +17,34 @@ type QuickActionsProps = {
 export const QuickActions = ({ recentBoards = [] }: QuickActionsProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<{
+    boards: { id: string; title: string; updatedAt: Date }[];
+    cards: { id: string; title: string; list: { board: { id: string; title: string } } }[];
+  } | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!searchQuery || searchQuery.length < 2) {
+      setSearchResults(null);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsLoading(true);
+      const res = await searchDashboard(searchQuery);
+      if (res && !('error' in res)) {
+        // Fix date string issue from server action serialization
+        const boards = res.boards.map((b) => ({
+          ...b,
+          updatedAt: new Date(b.updatedAt),
+        }));
+        setSearchResults({ ...res, boards });
+      }
+      setIsLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const shortcuts = [
     { key: 'N', label: 'Board baru', action: () => document.getElementById('create-board-btn')?.click() },
@@ -37,7 +67,7 @@ export const QuickActions = ({ recentBoards = [] }: QuickActionsProps) => {
   return (
     <>
       {/* Quick Actions Bar */}
-      <div className="glass-card rounded-xl p-4 mb-6 border border-zinc-700/50">
+      <div id="quick-actions" className="glass-card rounded-xl p-4 mb-6 border border-zinc-700/50">
         <div className="flex items-center justify-between flex-wrap gap-4">
           {/* Search Box */}
           <button onClick={() => setIsSearchOpen(true)} className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-zinc-800/50 border border-zinc-700/50 hover:border-zinc-600 transition-all group flex-1 max-w-md">
@@ -113,12 +143,64 @@ export const QuickActions = ({ recentBoards = [] }: QuickActionsProps) => {
             </div>
 
             <div className="p-4 max-h-[50vh] overflow-y-auto">
-              {searchQuery ? (
+              {isLoading ? (
                 <div className="text-center py-8">
-                  <Sparkles className="h-10 w-10 text-zinc-600 mx-auto mb-3" />
-                  <p className="text-sm text-zinc-500">Fitur pencarian akan segera hadir!</p>
+                  <Loader2 className="h-8 w-8 text-indigo-500 animate-spin mx-auto mb-2" />
+                  <p className="text-xs text-zinc-500">Mencari...</p>
+                </div>
+              ) : searchResults ? (
+                <div className="space-y-6">
+                  {/* Boards Results */}
+                  {searchResults.boards.length > 0 && (
+                    <div>
+                      <h4 className="text-xs font-semibold text-zinc-500 mb-3 uppercase tracking-wider px-2">Board</h4>
+                      <div className="space-y-1">
+                        {searchResults.boards.map((board) => (
+                          <Link key={board.id} href={`/dashboard/board/${board.id}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800/50 transition-all group">
+                            <div className="w-8 h-8 rounded bg-indigo-500/20 flex items-center justify-center">
+                              <Layout className="h-4 w-4 text-indigo-400" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-zinc-200 group-hover:text-white">{board.title}</p>
+                              <p className="text-xs text-zinc-500">Terakhir aktif {new Date(board.updatedAt).toLocaleDateString()}</p>
+                            </div>
+                            <ChevronRight className="ml-auto h-4 w-4 text-zinc-600 group-hover:text-indigo-400 opacity-0 group-hover:opacity-100 transition-all" />
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Cards Results */}
+                  {searchResults.cards.length > 0 && (
+                    <div>
+                      <h4 className="text-xs font-semibold text-zinc-500 mb-3 uppercase tracking-wider px-2">Kartu Tugas</h4>
+                      <div className="space-y-1">
+                        {searchResults.cards.map((card) => (
+                          <Link key={card.id} href={`/dashboard/board/${card.list.board.id}?card=${card.id}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800/50 transition-all group">
+                            <div className="w-8 h-8 rounded bg-emerald-500/20 flex items-center justify-center">
+                              <FileText className="h-4 w-4 text-emerald-400" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-zinc-200 group-hover:text-white">{card.title}</p>
+                              <p className="text-xs text-zinc-500">di board {card.list.board.title}</p>
+                            </div>
+                            <ChevronRight className="ml-auto h-4 w-4 text-zinc-600 group-hover:text-emerald-400 opacity-0 group-hover:opacity-100 transition-all" />
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {searchResults.boards.length === 0 && searchResults.cards.length === 0 && (
+                    <div className="text-center py-8">
+                      <Search className="h-10 w-10 text-zinc-700 mx-auto mb-3" />
+                      <p className="text-zinc-500">Tidak ditemukan hasil untuk "{searchQuery}"</p>
+                    </div>
+                  )}
                 </div>
               ) : (
+                // Show Shortcuts when no search query
                 <div className="space-y-4">
                   <div>
                     <p className="text-xs font-medium text-zinc-500 mb-2 px-2">PINTASAN KEYBOARD</p>

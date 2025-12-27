@@ -1,18 +1,18 @@
-// web/actions/delete-list.ts
+// actions/delete-list.ts
 'use server';
 
-import { auth } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { defaultDeps, type Dependencies } from '@/lib/deps';
 import { revalidatePath } from 'next/cache';
 
-export async function deleteList(listId: string) {
-  const session = await auth();
+// Internal function yang bisa di-test
+export async function _deleteList(listId: string, deps: Dependencies = defaultDeps) {
+  const session = await deps.auth();
   if (!session?.user?.email) {
     return { error: 'Unauthorized' };
   }
 
   try {
-    const list = await db.list.findUnique({
+    const list = await deps.db.list.findUnique({
       where: { id: listId },
       include: {
         board: true,
@@ -25,13 +25,13 @@ export async function deleteList(listId: string) {
     }
 
     // Check if user owns the board
-    const user = await db.user.findUnique({
+    const user = await deps.db.user.findUnique({
       where: { email: session.user.email },
     });
 
     if (list.board.userId !== user?.id) {
       // Check if user is a member
-      const membership = await db.boardMember.findUnique({
+      const membership = await deps.db.boardMember.findUnique({
         where: {
           boardId_userId: {
             boardId: list.board.id,
@@ -49,7 +49,7 @@ export async function deleteList(listId: string) {
     const cardCount = list.cards.length;
 
     // Delete the list (cards will be cascade deleted)
-    await db.list.delete({
+    await deps.db.list.delete({
       where: { id: listId },
     });
 
@@ -63,4 +63,9 @@ export async function deleteList(listId: string) {
     console.error('Error deleting list:', error);
     return { error: 'Gagal menghapus list' };
   }
+}
+
+// Server action wrapper
+export async function deleteList(listId: string) {
+  return _deleteList(listId);
 }

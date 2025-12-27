@@ -1,19 +1,19 @@
-// web/actions/update-card-deadline.ts
+// actions/update-card-deadline.ts
 'use server';
 
-import { auth } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { defaultDeps, type Dependencies } from '@/lib/deps';
 import { revalidatePath } from 'next/cache';
 
-export async function updateCardDeadline(cardId: string, dueDate: string | null) {
-  const session = await auth();
+// Internal function yang bisa di-test
+export async function _updateCardDeadline(cardId: string, dueDate: string | null, deps: Dependencies = defaultDeps) {
+  const session = await deps.auth();
   if (!session?.user?.email) {
     return { error: 'Unauthorized' };
   }
 
   try {
     // First, get the card to find the board ID
-    const card = await db.card.findUnique({
+    const card = await deps.db.card.findUnique({
       where: { id: cardId },
       include: { list: { include: { board: true } } },
     });
@@ -40,7 +40,7 @@ export async function updateCardDeadline(cardId: string, dueDate: string | null)
     }
 
     // Update using Prisma (using 'as any' while IDE reloads Prisma types)
-    await db.card.update({
+    await deps.db.card.update({
       where: { id: cardId },
       data: {
         dueDate: parsedDate,
@@ -61,4 +61,9 @@ export async function updateCardDeadline(cardId: string, dueDate: string | null)
 
     return { error: `Gagal mengupdate deadline: ${errorMessage}` };
   }
+}
+
+// Server action wrapper
+export async function updateCardDeadline(cardId: string, dueDate: string | null) {
+  return _updateCardDeadline(cardId, dueDate);
 }

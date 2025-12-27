@@ -1,9 +1,9 @@
 // web/app/page.test.tsx
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import LandingPage from './page'; // Import Landing Page kamu
+import LandingPage from './page';
 
-// Kita harus men-mock 'auth' karena itu fungsi server
+// Mock 'auth' karena itu fungsi server
 vi.mock('@/lib/auth', () => ({
   auth: vi.fn().mockResolvedValue(null), // Simulasi user belum login
 }));
@@ -15,16 +15,41 @@ vi.mock('next/link', () => ({
 }));
 
 describe('Landing Page', () => {
-  it('merender judul utama', async () => {
-    // Render halaman (Async component perlu diawait di test modern, tapi untuk unit test simple kita render hasil fungsinya)
-    // Catatan: Testing Server Component (Async) di Unit Test agak tricky.
-    // Untuk pemula, lebih mudah mengetes "Client Component".
-
+  it('merender judul utama Flerro', async () => {
     const ui = await LandingPage();
     render(ui);
 
-    // Cari teks "TaskFlow"
-    const heading = screen.getByText(/TaskFlow/i);
-    expect(heading).toBeInTheDocument();
+    // Gunakan getAllByText karena ada banyak elemen dengan "Flerro"
+    const flerroElements = screen.getAllByText(/Flerro/i);
+    expect(flerroElements.length).toBeGreaterThan(0);
+  });
+
+  it('merender hero section dengan tagline', async () => {
+    const ui = await LandingPage();
+    render(ui);
+
+    // Cek tagline/description
+    expect(screen.getByText(/kolaborasi modern/i)).toBeInTheDocument();
+  });
+
+  it('merender link ke login', async () => {
+    const ui = await LandingPage();
+    render(ui);
+
+    // Cek ada link ke halaman login
+    const loginLinks = screen.getAllByRole('link', { name: /login|masuk|mulai|gratis/i });
+    expect(loginLinks.length).toBeGreaterThan(0);
+  });
+
+  it('merender fitur-fitur utama', async () => {
+    const ui = await LandingPage();
+    render(ui);
+
+    // Gunakan getAllByText karena ada multiple matches
+    const kanbanElements = screen.getAllByText(/Kanban/i);
+    expect(kanbanElements.length).toBeGreaterThan(0);
+
+    const realtimeElements = screen.getAllByText(/real-time/i);
+    expect(realtimeElements.length).toBeGreaterThan(0);
   });
 });

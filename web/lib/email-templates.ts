@@ -131,8 +131,8 @@ export function getWelcomeEmailTemplate(name: string): string {
               <td style="padding-top: 24px; text-align: center">
                 <a
                   href="${appUrl}/dashboard"
-                  style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #fff; text-decoration: none; font-size: 15px; font-weight: 600; border-radius: 10px"
-                  >Buka Dashboard →</a
+                  style="display: inline-block; padding: 8px 20px; color: #0b2d3aff; text-decoration: none; font-size: 15px; font-weight: 600; border-radius: 10px; position: relative; background: transparent; border: 2px solid #6366f1; box-shadow: 0 0 5px rgba(99, 102, 241, 0.5), 0 0 5px rgba(99, 102, 241, 0.3), 0 0 10px rgba(99, 102, 241, 0.2), inset 0 0 10px rgba(99, 102, 241, 0.1);"
+                  >Buka Dashboard</a
                 >
               </td>
             </tr>
@@ -246,7 +246,7 @@ export function getDeadlineReminderTemplate(name: string, tasks: DeadlineTask[])
         <td style="text-align: right; vertical-align: top; width: 130px">
           <p style="margin: 0 0 4px 0; font-size: 11px; color: #71717a">⏰ Deadline</p>
           <p class="subtext" style="margin: 0 0 12px 0; font-size: 12px; color: #52525b; line-height: 1.4">${dateStr}</p>
-          <a href="${calendarUrl}" target="_blank" style="display: inline-block; padding: 6px 10px; background-color: #4285f4; color: #fff; font-size: 10px; font-weight: 600; border-radius: 6px; text-decoration: none">Tambah ke Calendar</a>
+          <a href="${calendarUrl}" target="_blank" style="display: inline-block; padding: 4px 12px; color: #0b2d3aff; font-size: 10px; font-weight: 600; border-radius: 6px; text-decoration: none; position: relative; background: transparent; border: 2px solid #6366f1; box-shadow: 0 0 5px rgba(99, 102, 241, 0.5), 0 0 5px rgba(99, 102, 241, 0.3), 0 0 10px rgba(99, 102, 241, 0.2), inset 0 0 10px rgba(99, 102, 241, 0.1);" >Tambah ke Calendar</a>
         </td>
       </tr>
     </table>
@@ -337,8 +337,8 @@ export function getDeadlineReminderTemplate(name: string, tasks: DeadlineTask[])
               <td style="padding-top: 28px; text-align: center">
                 <a
                   href="${appUrl}/dashboard"
-                  style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #fff; text-decoration: none; font-size: 15px; font-weight: 600; border-radius: 10px"
-                  >Buka Dashboard →</a
+                  style="display: inline-block; padding: 8px 20px; color: #0b2d3aff; text-decoration: none; font-size: 15px; font-weight: 600; border-radius: 10px; position: relative; background: transparent; border: 2px solid #6366f1; box-shadow: 0 0 5px rgba(99, 102, 241, 0.5), 0 0 5px rgba(99, 102, 241, 0.3), 0 0 10px rgba(99, 102, 241, 0.2), inset 0 0 10px rgba(99, 102, 241, 0.1);" 
+                  >Buka Dashboard</a
                 >
               </td>
             </tr>

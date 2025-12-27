@@ -344,15 +344,15 @@ export const BoardNavbar = ({ data }: BoardNavbarProps) => {
         <div className="flex items-center gap-1.5">
           {isConnected ? (
             <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              <Wifi className="h-3 w-3" />
-              <span className="hidden sm:inline">Live</span>
+              {onlineUsers.length > 1 ? <Users className="h-3 w-3" /> : <Wifi className="h-3 w-3" />}
+              <span className="hidden sm:inline">{onlineUsers.length > 1 ? `${onlineUsers.length} Orang Online` : 'Live'}</span>
             </span>
-          ) : (
-            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-red-500/20 text-red-400 border border-red-500/30">
-              <WifiOff className="h-3 w-3" />
-              <span className="hidden sm:inline">Offline</span>
+          ) : isCollaborative ? (
+            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-zinc-800 text-zinc-500 border border-zinc-700">
+              <Users className="h-3 w-3" />
+              <span className="hidden sm:inline">Tidak ada yang online</span>
             </span>
-          )}
+          ) : null}
         </div>
 
         {/* Online Users Avatars */}

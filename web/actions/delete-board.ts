@@ -1,19 +1,18 @@
-// web/actions/delete-board.ts
+// actions/delete-board.ts
 'use server';
 
-import { auth } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { defaultDeps, type Dependencies } from '@/lib/deps';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
-export async function deleteBoard(boardId: string) {
-  const session = await auth();
+// Internal function yang bisa di-test
+export async function _deleteBoard(boardId: string, deps: Dependencies = defaultDeps) {
+  const session = await deps.auth();
   if (!session?.user?.email) {
     return { error: 'Unauthorized' };
   }
 
   try {
-    const user = await db.user.findUnique({
+    const user = await deps.db.user.findUnique({
       where: { email: session.user.email },
     });
 
@@ -21,7 +20,7 @@ export async function deleteBoard(boardId: string) {
       return { error: 'User tidak ditemukan' };
     }
 
-    const board = await db.board.findUnique({
+    const board = await deps.db.board.findUnique({
       where: { id: boardId },
       include: {
         lists: {
@@ -48,7 +47,7 @@ export async function deleteBoard(boardId: string) {
     const memberCount = board.members.length;
 
     // Delete the board (lists, cards, and members will be cascade deleted)
-    await db.board.delete({
+    await deps.db.board.delete({
       where: { id: boardId },
     });
 
@@ -64,4 +63,9 @@ export async function deleteBoard(boardId: string) {
     console.error('Error deleting board:', error);
     return { error: 'Gagal menghapus board' };
   }
+}
+
+// Server action wrapper
+export async function deleteBoard(boardId: string) {
+  return _deleteBoard(boardId);
 }

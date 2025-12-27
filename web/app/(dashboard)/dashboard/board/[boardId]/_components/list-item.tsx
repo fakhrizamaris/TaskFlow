@@ -1,4 +1,3 @@
-// web/app/(dashboard)/board/[boardId]/_components/list-item.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -13,7 +12,6 @@ import { useRouter } from 'next/navigation';
 
 import { useBoardSocketContext } from '@/providers/board-socket-provider';
 
-// Define CardStatus type locally until Prisma regenerates
 type CardStatus = 'TODO' | 'IN_PROGRESS' | 'DONE';
 type CardWithStatus = Card & { status?: CardStatus; dueDate?: Date | string | null };
 

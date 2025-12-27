@@ -92,7 +92,7 @@ export const StatsOverview = ({ totalBoards, completedTasks = 0, pendingTasks = 
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div id="stats-overview" className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
       {stats.map((stat, index) => (
         <div key={stat.label} className={`glass-card rounded-xl p-4 border ${stat.borderColor} hover:scale-105 transition-all duration-300 group cursor-default`} style={{ animationDelay: `${index * 100}ms` }}>
           <div className="flex items-start justify-between mb-3">

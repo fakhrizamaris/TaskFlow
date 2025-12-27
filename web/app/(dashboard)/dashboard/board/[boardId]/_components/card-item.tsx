@@ -11,10 +11,8 @@ import { updateCardDeadline } from '@/actions/update-card-deadline';
 import { deleteCard } from '@/actions/delete-card';
 import { useRouter } from 'next/navigation';
 
-// Define CardStatus type locally until Prisma regenerates
 type CardStatus = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
-// Extend Card type to include status and dueDate
 type CardWithStatus = Card & {
   status?: CardStatus;
   dueDate?: Date | string | null;

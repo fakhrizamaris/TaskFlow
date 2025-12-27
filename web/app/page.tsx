@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { ArrowRight, Layout, Users, Zap, Clock, Bell, BarChart3, Sparkles, CheckCircle2, ChevronDown, Star, Shield, Layers, GitBranch, MessageSquare, Calendar, Target, TrendingUp, Globe, Lock } from 'lucide-react';
+import { Navbar } from '@/components/landing/navbar';
 
 export default async function LandingPage() {
   const session = await auth();
@@ -103,46 +104,7 @@ export default async function LandingPage() {
       <div className="floating-orb orb-3" />
 
       {/* Navbar */}
-      <header className="navbar-blur fixed top-0 w-full z-50">
-        <div className="container mx-auto flex h-20 items-center justify-between px-6">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="absolute inset-0 bg-indigo-500 blur-lg opacity-50" />
-              <img src="/favicon.png" alt="Flerro Logo" className="relative h-8 w-8" />
-            </div>
-            <span className="text-2xl font-bold gradient-text-glow">Flerro</span>
-          </div>
-
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm text-zinc-400 hover:text-white transition-colors">
-              Fitur
-            </a>
-            <a href="#how-it-works" className="text-sm text-zinc-400 hover:text-white transition-colors">
-              Cara Kerja
-            </a>
-            <a href="#testimonials" className="text-sm text-zinc-400 hover:text-white transition-colors">
-              Testimonial
-            </a>
-          </nav>
-
-          <div className="flex items-center gap-4">
-            {session?.user ? (
-              <Link href="/dashboard" className="btn-primary rounded-full px-6 py-2.5 text-sm font-semibold text-white flex items-center gap-2">
-                Dashboard <ArrowRight className="h-4 w-4" />
-              </Link>
-            ) : (
-              <>
-                <Link href="/login" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors hidden sm:block">
-                  Masuk
-                </Link>
-                <Link href="/login" className="btn-primary rounded-full px-6 py-2.5 text-sm font-semibold text-white">
-                  Mulai Gratis
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
+      <Navbar isLoggedIn={!!session?.user} />
 
       {/* Hero Section */}
       <main className="relative">
@@ -152,7 +114,7 @@ export default async function LandingPage() {
               {/* Badge */}
               <div className="inline-flex items-center gap-2 feature-badge rounded-full px-4 py-2 my-4 mb-4">
                 <Sparkles className="h-4 w-4 text-indigo-400" />
-                <span className="text-sm text-zinc-300">Platform Manajemen Project #1 di Indonesia</span>
+                <span className="text-sm text-zinc-300">Platform Manajemen Project</span>
               </div>
 
               {/* Main Headline */}
@@ -171,12 +133,9 @@ export default async function LandingPage() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-                <Link href={session?.user ? '/dashboard' : '/login'} className="btn-primary rounded-full px-8 py-4 text-base font-semibold text-white flex items-center justify-center gap-2 group">
-                  Mulai Sekarang — Gratis
+                <Link href={session?.user ? '/dashboard' : '/login'} className="btn-glow rounded-full px-8 py-4 text-base font-semibold text-white flex items-center justify-center gap-2 group">
+                  Mulai Sekarang
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link href="#features" className="btn-secondary rounded-full px-8 py-4 text-base font-semibold text-zinc-300 flex items-center justify-center gap-2">
-                  Lihat Demo
                 </Link>
               </div>
 
@@ -207,89 +166,98 @@ export default async function LandingPage() {
         </section>
 
         {/* Board Preview Section */}
-        <section className="py-20 relative overflow-hidden">
-          <div className="container mx-auto px-6">
+        <section className="py-12 sm:py-20 relative overflow-hidden">
+          <div className="container mx-auto px-4 sm:px-6">
             <div className="board-preview max-w-5xl mx-auto">
-              <div className="board-preview-inner glass-card rounded-2xl p-6 shine">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-rose-500" />
-                    <div className="w-3 h-3 rounded-full bg-amber-500" />
-                    <div className="w-3 h-3 rounded-full bg-emerald-500" />
+              <div className="board-preview-inner glass-card rounded-xl sm:rounded-2xl p-3 sm:p-6 shine">
+                {/* Window Header */}
+                <div className="flex items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+                  <div className="flex gap-1.5 sm:gap-2">
+                    <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-rose-500" />
+                    <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-amber-500" />
+                    <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-emerald-500" />
                   </div>
-                  <div className="flex-1 text-center text-sm text-zinc-400">Flerro Board — Project Alpha</div>
+                  <div className="flex-1 text-center text-xs sm:text-sm text-zinc-400 truncate">Flerro Board — Project Alpha</div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                {/* Board Columns - Horizontal scroll on mobile, grid on larger screens */}
+                <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 sm:pb-0 snap-x snap-mandatory md:grid md:grid-cols-3 md:overflow-visible scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
                   {/* To Do Column */}
-                  <div className="bg-zinc-800/50 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm font-semibold text-zinc-300">📋 To Do</span>
-                      <span className="text-xs text-zinc-500 bg-zinc-700 px-2 py-1 rounded">3</span>
+                  <div className="bg-zinc-800/50 rounded-lg sm:rounded-xl p-3 sm:p-4 min-w-[240px] sm:min-w-[260px] md:min-w-0 snap-center flex-shrink-0 md:flex-shrink">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                      <span className="text-xs sm:text-sm font-semibold text-zinc-300">📋 To Do</span>
+                      <span className="text-[10px] sm:text-xs text-zinc-500 bg-zinc-700 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">3</span>
                     </div>
-                    <div className="space-y-3">
-                      <div className="bg-zinc-900/80 rounded-lg p-3 border border-zinc-700/50">
-                        <p className="text-sm text-zinc-300 mb-2">Desain UI Dashboard</p>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs bg-violet-500/20 text-violet-400 px-2 py-0.5 rounded">Design</span>
+                    <div className="space-y-2 sm:space-y-3">
+                      <div className="bg-zinc-900/80 rounded-lg p-2.5 sm:p-3 border border-zinc-700/50">
+                        <p className="text-xs sm:text-sm text-zinc-300 mb-2">Desain UI Dashboard</p>
+                        <div className="flex items-center gap-1.5 sm:gap-2">
+                          <span className="text-[10px] sm:text-xs bg-violet-500/20 text-violet-400 px-1.5 sm:px-2 py-0.5 rounded">Design</span>
                           <div className="flex -space-x-1 ml-auto">
-                            <div className="w-5 h-5 rounded-full bg-indigo-500 text-[10px] flex items-center justify-center">A</div>
+                            <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-indigo-500 text-[8px] sm:text-[10px] flex items-center justify-center">A</div>
                           </div>
                         </div>
                       </div>
-                      <div className="bg-zinc-900/80 rounded-lg p-3 border border-zinc-700/50">
-                        <p className="text-sm text-zinc-300 mb-2">Setup Database Schema</p>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">Backend</span>
+                      <div className="bg-zinc-900/80 rounded-lg p-2.5 sm:p-3 border border-zinc-700/50">
+                        <p className="text-xs sm:text-sm text-zinc-300 mb-2">Setup Database Schema</p>
+                        <div className="flex items-center gap-1.5 sm:gap-2">
+                          <span className="text-[10px] sm:text-xs bg-emerald-500/20 text-emerald-400 px-1.5 sm:px-2 py-0.5 rounded">Backend</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* In Progress Column */}
-                  <div className="bg-zinc-800/50 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm font-semibold text-zinc-300">🔄 In Progress</span>
-                      <span className="text-xs text-zinc-500 bg-zinc-700 px-2 py-1 rounded">2</span>
+                  <div className="bg-zinc-800/50 rounded-lg sm:rounded-xl p-3 sm:p-4 min-w-[240px] sm:min-w-[260px] md:min-w-0 snap-center flex-shrink-0 md:flex-shrink">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                      <span className="text-xs sm:text-sm font-semibold text-zinc-300">🔄 In Progress</span>
+                      <span className="text-[10px] sm:text-xs text-zinc-500 bg-zinc-700 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">2</span>
                     </div>
-                    <div className="space-y-3">
-                      <div className="bg-zinc-900/80 rounded-lg p-3 border border-indigo-500/30 ring-2 ring-indigo-500/20">
-                        <p className="text-sm text-zinc-300 mb-2">API Integration</p>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded">Priority</span>
+                    <div className="space-y-2 sm:space-y-3">
+                      <div className="bg-zinc-900/80 rounded-lg p-2.5 sm:p-3 border border-indigo-500/30 ring-2 ring-indigo-500/20">
+                        <p className="text-xs sm:text-sm text-zinc-300 mb-2">API Integration</p>
+                        <div className="flex items-center gap-1.5 sm:gap-2">
+                          <span className="text-[10px] sm:text-xs bg-amber-500/20 text-amber-400 px-1.5 sm:px-2 py-0.5 rounded">Priority</span>
                           <div className="flex -space-x-1 ml-auto">
-                            <div className="w-5 h-5 rounded-full bg-cyan-500 text-[10px] flex items-center justify-center">B</div>
-                            <div className="w-5 h-5 rounded-full bg-rose-500 text-[10px] flex items-center justify-center">C</div>
+                            <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-cyan-500 text-[8px] sm:text-[10px] flex items-center justify-center">B</div>
+                            <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-rose-500 text-[8px] sm:text-[10px] flex items-center justify-center">C</div>
                           </div>
                         </div>
-                        <div className="mt-2 text-[10px] text-indigo-400 flex items-center gap-1">
-                          <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />2 orang sedang mengedit...
+                        <div className="mt-2 text-[8px] sm:text-[10px] text-indigo-400 flex items-center gap-1">
+                          <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-indigo-400 animate-pulse" />2 orang sedang mengedit...
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Done Column */}
-                  <div className="bg-zinc-800/50 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm font-semibold text-zinc-300">✅ Done</span>
-                      <span className="text-xs text-zinc-500 bg-zinc-700 px-2 py-1 rounded">5</span>
+                  <div className="bg-zinc-800/50 rounded-lg sm:rounded-xl p-3 sm:p-4 min-w-[240px] sm:min-w-[260px] md:min-w-0 snap-center flex-shrink-0 md:flex-shrink">
+                    <div className="flex items-center justify-between mb-3 sm:mb-4">
+                      <span className="text-xs sm:text-sm font-semibold text-zinc-300">✅ Done</span>
+                      <span className="text-[10px] sm:text-xs text-zinc-500 bg-zinc-700 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">5</span>
                     </div>
-                    <div className="space-y-3">
-                      <div className="bg-zinc-900/80 rounded-lg p-3 border border-zinc-700/50 opacity-80">
-                        <p className="text-sm text-zinc-400 line-through mb-2">Project Setup</p>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs bg-zinc-700 text-zinc-400 px-2 py-0.5 rounded">Completed</span>
+                    <div className="space-y-2 sm:space-y-3">
+                      <div className="bg-zinc-900/80 rounded-lg p-2.5 sm:p-3 border border-zinc-700/50 opacity-80">
+                        <p className="text-xs sm:text-sm text-zinc-400 line-through mb-2">Project Setup</p>
+                        <div className="flex items-center gap-1.5 sm:gap-2">
+                          <span className="text-[10px] sm:text-xs bg-zinc-700 text-zinc-400 px-1.5 sm:px-2 py-0.5 rounded">Completed</span>
                         </div>
                       </div>
-                      <div className="bg-zinc-900/80 rounded-lg p-3 border border-zinc-700/50 opacity-80">
-                        <p className="text-sm text-zinc-400 line-through mb-2">User Authentication</p>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs bg-zinc-700 text-zinc-400 px-2 py-0.5 rounded">Completed</span>
+                      <div className="bg-zinc-900/80 rounded-lg p-2.5 sm:p-3 border border-zinc-700/50 opacity-80">
+                        <p className="text-xs sm:text-sm text-zinc-400 line-through mb-2">User Authentication</p>
+                        <div className="flex items-center gap-1.5 sm:gap-2">
+                          <span className="text-[10px] sm:text-xs bg-zinc-700 text-zinc-400 px-1.5 sm:px-2 py-0.5 rounded">Completed</span>
                         </div>
                       </div>
                     </div>
                   </div>
+                </div>
+
+                {/* Mobile Scroll Indicator */}
+                <div className="flex md:hidden justify-center mt-3 gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-indigo-500" />
+                  <div className="w-2 h-2 rounded-full bg-zinc-600" />
+                  <div className="w-2 h-2 rounded-full bg-zinc-600" />
                 </div>
               </div>
             </div>
@@ -392,7 +360,7 @@ export default async function LandingPage() {
                     <p className="text-zinc-400">{item.description}</p>
                   </div>
                   {index < 2 && (
-                    <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2">
+                    <div className="hidden md:block absolute top-1/2 -right-7 transform -translate-y-1/2">
                       <ArrowRight className="h-6 w-6 text-zinc-600" />
                     </div>
                   )}
@@ -446,7 +414,7 @@ export default async function LandingPage() {
                   <span className="gradient-text">Siap Meningkatkan Produktivitas Tim?</span>
                 </h2>
                 <p className="text-lg text-zinc-400 max-w-xl mx-auto mb-10">Bergabung dengan ribuan tim yang sudah mengelola project mereka lebih efisien dengan Flerro.</p>
-                <Link href={session?.user ? '/dashboard' : '/login'} className="btn-primary inline-flex items-center gap-2 rounded-full px-8 py-4 text-base font-semibold text-white group">
+                <Link href={session?.user ? '/dashboard' : '/login'} className="btn-glow inline-flex items-center gap-2 rounded-full px-8 py-4 text-base font-semibold text-white group">
                   Coba Flerro Gratis Sekarang
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
@@ -483,7 +451,7 @@ export default async function LandingPage() {
             </div>
           </div>
 
-          <div className="text-center mt-8 text-sm text-zinc-600">© 2025 Flerro. Crafted with ❤️ by fdjmrs. All rights reserved.</div>
+          <div className="text-center mt-8 text-sm text-zinc-600">© 2025 Flerro. Created by fdjmrs. All rights reserved.</div>
         </div>
       </footer>
     </div>

@@ -1,12 +1,12 @@
-// web/actions/create-card.ts
+// actions/create-card.ts
 'use server';
 
-import { auth } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { defaultDeps, type Dependencies } from '@/lib/deps';
 import { revalidatePath } from 'next/cache';
 
-export async function createCard(formData: FormData) {
-  const session = await auth();
+// Internal function yang bisa di-test
+export async function _createCard(formData: FormData, deps: Dependencies = defaultDeps) {
+  const session = await deps.auth();
   const title = formData.get('title') as string;
   const listId = formData.get('listId') as string;
   const boardId = formData.get('boardId') as string;
@@ -16,7 +16,7 @@ export async function createCard(formData: FormData) {
   }
 
   // 1. Cek User (Keamanan)
-  const board = await db.board.findUnique({
+  const board = await deps.db.board.findUnique({
     where: {
       id: boardId,
       userId: session.user.id,
@@ -26,7 +26,7 @@ export async function createCard(formData: FormData) {
   if (!board) return { error: 'Unauthorized' };
 
   // 2. Cari order terakhir di list ini
-  const lastCard = await db.card.findFirst({
+  const lastCard = await deps.db.card.findFirst({
     where: { listId },
     orderBy: { order: 'desc' },
     select: { order: true },
@@ -35,7 +35,7 @@ export async function createCard(formData: FormData) {
   const newOrder = lastCard ? lastCard.order + 1 : 1;
 
   // 3. Simpan Kartu
-  await db.card.create({
+  await deps.db.card.create({
     data: {
       title,
       listId,
@@ -47,4 +47,9 @@ export async function createCard(formData: FormData) {
   // 4. Update UI
   revalidatePath(`/dashboard/board/${boardId}`);
   return { success: true };
+}
+
+// Server action wrapper
+export async function createCard(formData: FormData) {
+  return _createCard(formData);
 }

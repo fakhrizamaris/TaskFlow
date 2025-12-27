@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, CheckCircle, AlertCircle, Check, X } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { register } from '@/actions/register';
 
 // Password strength calculator
@@ -51,12 +52,14 @@ function calculatePasswordStrength(password: string, name: string): { score: num
 }
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -115,6 +118,11 @@ export default function RegisterPage() {
         setEmail('');
         setPassword('');
         setConfirmPassword('');
+
+        // Redirect to login page
+        setTimeout(() => {
+          router.push('/login');
+        }, 2000);
       }
     } catch {
       setError('Terjadi kesalahan. Silakan coba lagi.');
@@ -204,6 +212,8 @@ export default function RegisterPage() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onFocus={() => setIsPasswordFocused(true)}
+                  onBlur={() => setIsPasswordFocused(false)}
                   placeholder="Password"
                   required
                   minLength={6}
@@ -217,7 +227,7 @@ export default function RegisterPage() {
               </div>
 
               {/* Password Strength Indicator */}
-              {password.length > 0 && (
+              {isPasswordFocused && (
                 <div className="space-y-3">
                   {/* Strength Bar */}
                   <div className="flex items-center gap-2">
@@ -230,7 +240,7 @@ export default function RegisterPage() {
                   </div>
 
                   {/* Password Requirements */}
-                  <div className="bg-zinc-800/30 rounded-lg p-3 space-y-1.5">
+                  <div className="bg-zinc-800/30 rounded-lg p-3 space-y-1.5 animate-in slide-in-from-top-2 fade-in duration-300">
                     <p className="text-xs font-medium text-zinc-400 mb-2">Persyaratan password:</p>
                     {passwordStrength.checks.map((check, index) => (
                       <div key={index} className={`flex items-center gap-2 text-xs ${check.passed ? 'text-emerald-400' : 'text-zinc-500'}`}>
@@ -278,13 +288,7 @@ export default function RegisterPage() {
               disabled={isLoading || passwordStrength.score < 2 || passwordContainsName}
               className="btn-primary w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
             >
-              {isLoading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : (
-                <>
-                  Daftar Sekarang
-                </>
-              )}
+              {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <>Daftar Sekarang</>}
             </button>
           </form>
 

@@ -1,19 +1,19 @@
-// web/actions/invite-member.ts
+// actions/invite-member.ts
 'use server';
 
-import { auth } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { defaultDeps, type Dependencies } from '@/lib/deps';
 import { revalidatePath } from 'next/cache';
 
-export async function inviteMember(formData: FormData) {
+// Internal function yang bisa di-test
+export async function _inviteMember(formData: FormData, deps: Dependencies = defaultDeps) {
   const email = formData.get('email') as string;
   const boardId = formData.get('boardId') as string;
 
-  const session = await auth();
+  const session = await deps.auth();
   if (!session?.user) return { error: 'Unauthorized' };
 
   // 1. Cari User berdasarkan Email
-  const userToInvite = await db.user.findUnique({
+  const userToInvite = await deps.db.user.findUnique({
     where: { email },
   });
 
@@ -22,7 +22,7 @@ export async function inviteMember(formData: FormData) {
   }
 
   // 2. Cek apakah sudah jadi member?
-  const existingMember = await db.boardMember.findUnique({
+  const existingMember = await deps.db.boardMember.findUnique({
     where: {
       boardId_userId: {
         boardId,
@@ -36,13 +36,13 @@ export async function inviteMember(formData: FormData) {
   }
 
   // 3. Cek apakah dia Owner? (Owner gak perlu diinvite)
-  const board = await db.board.findUnique({ where: { id: boardId } });
+  const board = await deps.db.board.findUnique({ where: { id: boardId } });
   if (board?.userId === userToInvite.id) {
     return { error: 'User ini adalah pemilik board!' };
   }
 
   // 4. Tambahkan ke BoardMember
-  await db.boardMember.create({
+  await deps.db.boardMember.create({
     data: {
       boardId,
       userId: userToInvite.id,
@@ -52,4 +52,9 @@ export async function inviteMember(formData: FormData) {
 
   revalidatePath(`/board/${boardId}`);
   return { success: `Berhasil mengundang ${userToInvite.name}` };
+}
+
+// Server action wrapper
+export async function inviteMember(formData: FormData) {
+  return _inviteMember(formData);
 }

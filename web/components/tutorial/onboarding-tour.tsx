@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react';
 import { driver } from 'driver.js';
-import 'driver.js/dist/driver.css'; // Import CSS wajib driver.js
+import 'driver.js/dist/driver.css';
 import { completeTutorial } from '@/actions/user-progress';
 
 interface OnboardingTourProps {
@@ -12,98 +12,94 @@ interface OnboardingTourProps {
 
 export const OnboardingTour = ({ showTutorial }: OnboardingTourProps) => {
   useEffect(() => {
-    // Jika tutorial sudah selesai (false), jangan jalankan apa-apa
     if (!showTutorial) return;
 
-    // Konfigurasi Driver.js
+    // Define all possible steps focused on Dashboard elements
+    const stepsConf = [
+      {
+        element: '#welcome-header',
+        popover: {
+          title: 'Selamat Datang di TaskFlow! 👋',
+          description: 'Halo! Ini adalah dashboard pribadimu. Di sini kamu bisa melihat ringkasan aktivitas dan mengelola semua proyekmu.',
+          side: 'bottom' as const,
+          align: 'start' as const,
+        },
+      },
+      {
+        element: '#stats-overview',
+        popover: {
+          title: 'Pantau Progresmu 📊',
+          description: 'Lihat statistik produktivitasmu secara real-time. Pantau board, tugas selesai, tugas pending, dan rekan kolaborasi di satu tempat.',
+          side: 'bottom' as const,
+          align: 'center' as const,
+        },
+      },
+      {
+        element: '#quick-actions',
+        popover: {
+          title: 'Akses Cepat ⚡',
+          description: 'Gunakan panel ini untuk pencarian cepat (Ctrl+K) atau membuka kembali board yang baru saja kamu akses.',
+          side: 'top' as const,
+          align: 'center' as const,
+        },
+      },
+      {
+        element: '#create-board-btn',
+        popover: {
+          title: 'Buat Board Baru 📋',
+          description: 'Mulai proyek baru dengan membuat Board. Di dalamnya kamu bisa membuat List dan Card untuk mengatur tugas.',
+          side: 'bottom' as const,
+          align: 'center' as const,
+        },
+      },
+      {
+        element: '#join-board-btn',
+        popover: {
+          title: 'Kolaborasi Tim 🤝',
+          description: 'Punya kode undangan? Klik di sini untuk bergabung ke board teman atau tim-mu dan mulai berkolaborasi.',
+          side: 'bottom' as const,
+          align: 'center' as const,
+        },
+      },
+      {
+        element: '#logout-btn',
+        popover: {
+          title: 'Akun & Keluar 🚪',
+          description: 'Klik tombol ini jika kamu ingin keluar dari sesi akunmu dengan aman.',
+          side: 'left' as const,
+          align: 'center' as const,
+        },
+      },
+    ];
+
+    // Filter steps ensuring the target element exists in the DOM
+    const validSteps = stepsConf.filter((step) => {
+      return !!document.querySelector(step.element);
+    });
+
     const driverObj = driver({
       showProgress: true,
       animate: true,
-      allowClose: false, // User wajib selesaikan
+      allowClose: false,
       doneBtnText: 'Siap Mulai! 🚀',
       nextBtnText: 'Lanjut →',
       prevBtnText: '← Kembali',
       progressText: '{{current}} dari {{total}}',
-      // Langkah-langkah Tutorial
-      steps: [
-        {
-          element: '#welcome-header',
-          popover: {
-            title: 'Selamat Datang di TaskFlow! 👋',
-            description: 'TaskFlow adalah aplikasi manajemen tugas modern yang membantu kamu mengatur pekerjaan dengan lebih efisien. Mari kita jelajahi fitur-fiturnya!',
-            side: 'bottom',
-            align: 'start',
-          },
-        },
-        {
-          element: '#create-board-btn',
-          popover: {
-            title: '📋 Buat Board Baru',
-            description: 'Mulai dengan membuat Board pertamamu! Board adalah wadah untuk mengorganisir semua tugas dalam satu proyek. Kamu bisa membuat board Pribadi atau Kolaborasi.',
-            side: 'bottom',
-            align: 'center',
-          },
-        },
-        {
-          popover: {
-            title: '✨ Fitur List & Card',
-            description: 'Di dalam Board, kamu bisa membuat List (kolom) untuk mengkategorikan tugas, lalu menambahkan Card (kartu tugas) di setiap list. Drag & drop untuk mengatur urutan!',
-            side: 'bottom',
-            align: 'center',
-          },
-        },
-        {
-          popover: {
-            title: '⏰ Deadline & Reminder',
-            description: 'Setiap card bisa diberi deadline. TaskFlow akan mengirimkan email reminder otomatis saat deadline mendekat, lengkap dengan integrasi Google Calendar!',
-            side: 'bottom',
-            align: 'center',
-          },
-        },
-        {
-          popover: {
-            title: '👥 Kolaborasi Real-time',
-            description: 'Undang teman ke board kolaborasimu dengan kode unik. Semua perubahan tersinkronisasi secara real-time, dan kamu bisa melihat siapa yang sedang online!',
-            side: 'bottom',
-            align: 'center',
-          },
-        },
-        {
-          popover: {
-            title: '📊 Status Tracking',
-            description: 'Tandai progress tugasmu dengan status: TODO, IN PROGRESS, atau DONE. Visualisasi status membantu kamu memantau kemajuan proyek dengan mudah.',
-            side: 'bottom',
-            align: 'center',
-          },
-        },
-        {
-          popover: {
-            title: '⌨️ Keyboard Shortcuts',
-            description: 'Tingkatkan produktivitasmu dengan shortcut: Ctrl+K untuk pencarian, Ctrl+N untuk board baru, dan banyak lagi. Semua bisa diakses dari Quick Actions bar!',
-            side: 'bottom',
-            align: 'center',
-          },
-        },
-        {
-          element: '#create-board-btn',
-          popover: {
-            title: '🎯 Mulai Sekarang!',
-            description: 'Tutorial selesai! Klik tombol ini untuk membuat Board pertamamu dan mulai mengatur tugas. Selamat berproduktivitas! 💪',
-            side: 'bottom',
-            align: 'center',
-          },
-        },
-      ],
-      // Saat tutorial selesai/ditutup, panggil Server Action
+      steps: validSteps,
       onDestroyStarted: () => {
-        completeTutorial(); // Update DB jadi true
+        completeTutorial();
         driverObj.destroy();
       },
     });
 
-    // Jalankan tutorial
-    driverObj.drive();
+    // Validasi double check untuk memastikan element sudah render
+    // Terkadang useEffect jalan sebelum paint selesai sempurna
+    const timer = setTimeout(() => {
+      driverObj.drive();
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, [showTutorial]);
 
-  return null; // Komponen ini tidak me-render UI, cuma logika
+  return null;
 };
