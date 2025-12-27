@@ -110,7 +110,7 @@ export default function LoginPage() {
             </div>
 
             {/* Login Button */}
-            <button type="submit" disabled={isLoading} className="btn-primary w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer">
+            <button type="submit" disabled={isLoading} className="btn-glow w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer">
               {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <>Masuk</>}
             </button>
           </form>

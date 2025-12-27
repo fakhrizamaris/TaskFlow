@@ -286,7 +286,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading || passwordStrength.score < 2 || passwordContainsName}
-              className="btn-primary w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+              className="btn-glow w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
             >
               {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <>Daftar Sekarang</>}
             </button>

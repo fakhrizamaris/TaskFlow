@@ -13,10 +13,10 @@ export const LogoutButton = () => {
     <button
       id="logout-btn"
       onClick={handleLogout}
-      className="inline-flex items-center gap-2 rounded-lg bg-zinc-800/50 border border-zinc-700/50 px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-rose-500/20 hover:text-rose-400 hover:border-rose-500/30 transition-all cursor-pointer"
+      className="btn-glow inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-white transition-all cursor-pointer hover:bg-rose-500/20 border-rose-500/50 shadow-lg shadow-rose-500/20"
     >
       <LogOut className="h-4 w-4" />
-      Logout
+      <span className="hidden sm:inline">Logout</span>
     </button>
   );
 };

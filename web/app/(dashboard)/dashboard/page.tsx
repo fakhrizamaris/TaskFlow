@@ -91,13 +91,13 @@ export default async function DashboardPage() {
 
       <div className="relative z-10 mx-auto max-w-6xl">
         {/* Enhanced Header */}
-        <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-700/50 pb-6 mb-8">
-          <div id="welcome-header" className="space-y-1">
+        <header className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-700/50 pb-6 mb-8">
+          <div id="welcome-header" className="space-y-1 pr-12 sm:pr-0">
             <div className="flex items-center gap-2 text-sm text-zinc-500 mb-1">
               <Calendar className="h-4 w-4" />
               <span>{new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
               {greeting}, <span className="gradient-text-primary">{session.user.name?.split(' ')[0]}</span>! 👋
             </h1>
             <p className="text-zinc-400 mt-1 flex items-center gap-2">
@@ -105,7 +105,9 @@ export default async function DashboardPage() {
               Apa yang ingin kamu selesaikan hari ini?
             </p>
           </div>
-          <LogoutButton />
+          <div className="absolute top-0 right-0 sm:static">
+            <LogoutButton />
+          </div>
         </header>
 
         {/* Stats Overview - Only show when there are boards */}

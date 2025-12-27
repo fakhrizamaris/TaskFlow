@@ -97,7 +97,7 @@ export const CreateBoardButton = () => {
               {/* Header with gradient border */}
               <div className="relative flex items-center justify-between p-5 border-b border-zinc-700/50">
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/25">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 shadow-lg shadow-teal-500/25">
                     <Plus className="h-5 w-5 text-white" />
                   </div>
                   <div>
@@ -105,7 +105,7 @@ export const CreateBoardButton = () => {
                     <p className="text-xs text-zinc-500">Mulai proyek kolaborasi baru</p>
                   </div>
                 </div>
-                <button onClick={handleClose} className="flex items-center justify-center w-8 h-8 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-all duration-200">
+                <button onClick={handleClose} className="flex items-center justify-center w-8 h-8 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-all duration-200 cursor-pointer">
                   <X className="h-5 w-5" />
                 </button>
               </div>
@@ -144,10 +144,10 @@ export const CreateBoardButton = () => {
                         type="text"
                         placeholder="Misal: Marketing Campaign 2025"
                         maxLength={50}
-                        className="w-full rounded-xl border border-zinc-700 bg-zinc-800/50 px-4 py-3 text-zinc-100 placeholder:text-zinc-500 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none transition-all duration-200"
+                        className="w-full rounded-xl border border-zinc-700 bg-zinc-800/50 px-4 py-3 text-zinc-100 placeholder:text-zinc-500 focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 outline-none transition-all duration-200"
                         autoFocus
                       />
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-cyan-500/20 opacity-0 group-focus-within:opacity-100 transition-opacity -z-10 blur-sm" />
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-teal-500/20 via-teal-500/20 to-teal-500/20 opacity-0 group-focus-within:opacity-100 transition-opacity -z-10 blur-sm" />
                     </div>
                     {errors.title && (
                       <p className="text-red-400 text-xs flex items-center gap-1 animate-in slide-in-from-top-1">
@@ -220,13 +220,13 @@ export const CreateBoardButton = () => {
 
                   {/* Footer Buttons */}
                   <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
-                    <button type="button" onClick={handleClose} className="px-4 py-2 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 rounded-lg transition-all duration-200">
+                    <button type="button" onClick={handleClose} className="px-4 py-2 text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 rounded-lg transition-all duration-200 hover: cursor-pointer">
                       Batal
                     </button>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="group flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl hover:from-indigo-500 hover:to-purple-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40"
+                      className="btn-glow group flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold text-white rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:bg-teal-500/20 border-teal-500/50 shadow-teal-500/20 cursor-pointer"
                     >
                       {isSubmitting ? (
                         <>
@@ -251,7 +251,11 @@ export const CreateBoardButton = () => {
 
   return (
     <>
-      <button id="create-board-btn" onClick={() => setIsOpen(true)} className="btn-primary group inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-lg cursor-pointer relative overflow-hidden">
+      <button
+        id="create-board-btn"
+        onClick={() => setIsOpen(true)}
+        className="btn-glow group inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-lg cursor-pointer relative overflow-hidden hover:bg-teal-500/20 border-teal-500/50 shadow-teal-500/20"
+      >
         <Plus className="h-5 w-5 transition-transform group-hover:rotate-90 duration-300" />
         <span>Buat Board Baru</span>
         {/* Remove Sparkles since user deleted it */}

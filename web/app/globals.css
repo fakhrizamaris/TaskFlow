@@ -169,40 +169,44 @@
   transform: translateY(-2px);
 }
 
-/* Glowing outline button - transparent background with glowing border only */
-.btn-glow {
-  position: relative;
-  background: transparent;
-  border: 2px solid #6366f1;
-  box-shadow: 
-    0 0 5px rgba(99, 102, 241, 0.5),
-    0 0 5px rgba(99, 102, 241, 0.3),
-    0 0 10px rgba(99, 102, 241, 0.2),
-    inset 0 0 10px rgba(99, 102, 241, 0.1);
-  transition: all 0.3s ease;
-}
 
-.btn-glow:hover {
-  border-color: #22d3ee;
-  box-shadow: 
-    0 0 5px rgba(34, 211, 238, 0.6),
-    0 0 10px rgba(34, 211, 238, 0.4),
-    0 0 15px rgba(34, 211, 238, 0.3),
-    0 0 20px rgba(99, 102, 241, 0.2),
-    inset 0 0 5px rgba(34, 211, 238, 0.15);
-  transform: translateY(-2px);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
+@layer components {
+  /* Glowing outline button - transparent background with glowing border only */
+  /* Wrapped in @layer components so utilities can override hover states */
+  .btn-glow {
+    position: relative;
+    background: transparent;
+    border: 2px solid #6366f1;
+    box-shadow: 
+      0 0 5px rgba(99, 102, 241, 0.5),
+      0 0 5px rgba(99, 102, 241, 0.3),
+      0 0 10px rgba(99, 102, 241, 0.2),
+      inset 0 0 10px rgba(99, 102, 241, 0.1);
+    transition: all 0.3s ease;
+  }
 
-.btn-secondary {
-  background: transparent;
-  border: 1px solid rgba(63, 63, 70, 0.8);
-  transition: all 0.3s ease;
-}
+  .btn-glow:hover {
+    border-color: #22d3ee;
+    box-shadow: 
+      0 0 5px rgba(34, 211, 238, 0.6),
+      0 0 10px rgba(34, 211, 238, 0.4),
+      0 0 15px rgba(34, 211, 238, 0.3),
+      0 0 20px rgba(99, 102, 241, 0.2),
+      inset 0 0 5px rgba(34, 211, 238, 0.15);
+    transform: translateY(-2px);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
 
-.btn-secondary:hover {
-  background: rgba(39, 39, 42, 0.5);
-  border-color: rgba(99, 102, 241, 0.5);
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(63, 63, 70, 0.8);
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(39, 39, 42, 0.5);
+    border-color: rgba(99, 102, 241, 0.5);
+  }
 }
 
 /* Feature icon wrapper */

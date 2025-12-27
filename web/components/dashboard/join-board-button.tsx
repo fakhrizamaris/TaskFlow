@@ -90,7 +90,7 @@ export const JoinBoardButton = () => {
               {/* Header */}
               <div className="relative flex items-center justify-between p-5 border-b border-zinc-700/50">
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 shadow-lg shadow-emerald-500/25">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-lime-500 to-green-600 shadow-lg shadow-lime-500/25">
                     <Users className="h-5 w-5 text-white" />
                   </div>
                   <div>
@@ -98,7 +98,7 @@ export const JoinBoardButton = () => {
                     <p className="text-xs text-zinc-500">Masukkan kode undangan dari teman</p>
                   </div>
                 </div>
-                <button onClick={handleClose} className="flex items-center justify-center w-8 h-8 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-all duration-200">
+                <button onClick={handleClose} className="flex items-center justify-center w-8 h-8 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-all duration-200 cursor-pointer">
                   <X className="h-5 w-5" />
                 </button>
               </div>
@@ -138,7 +138,7 @@ export const JoinBoardButton = () => {
                           })}
                           type="text"
                           placeholder="ABC123"
-                          className="w-full rounded-xl border border-zinc-700 bg-zinc-800/50 px-4 py-4 text-center text-2xl font-mono uppercase tracking-[0.5em] text-zinc-100 placeholder:text-zinc-600 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 outline-none transition-all duration-200"
+                          className="w-full rounded-xl border border-zinc-700 bg-zinc-800/50 px-4 py-4 text-center text-2xl font-mono uppercase tracking-[0.5em] text-zinc-100 placeholder:text-zinc-600 focus:ring-2 focus:ring-lime-500/50 focus:border-lime-500 outline-none transition-all duration-200"
                           autoFocus
                           maxLength={6}
                         />
@@ -181,7 +181,7 @@ export const JoinBoardButton = () => {
                       <button
                         type="submit"
                         disabled={isSubmitting || !codeValue?.length}
-                        className="group flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-emerald-600 to-green-600 rounded-xl hover:from-emerald-500 hover:to-green-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40"
+                        className="btn-glow group flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold text-white rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:bg-lime-500/20 border-lime-500/50 shadow-lime-500/20 cursor-pointer"
                       >
                         {isSubmitting ? (
                           <>
@@ -207,11 +207,7 @@ export const JoinBoardButton = () => {
 
   return (
     <>
-      <button
-        id="join-board-btn"
-        onClick={() => setIsOpen(true)}
-        className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition-all duration-300 cursor-pointer relative overflow-hidden"
-      >
+      <button id="join-board-btn" onClick={() => setIsOpen(true)} className="btn-glow inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white cursor-pointer relative overflow-hidden group hover:bg-lime-500/20 border-lime-500/50 shadow-lime-500/20">
         <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
         <UserPlus className="h-5 w-5 transition-transform group-hover:scale-110 duration-300" />
         <span>Gabung Board</span>
